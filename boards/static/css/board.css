@@ -1,0 +1,156 @@
+*, *:before, *:after{
+    box-sizing: border-box;
+}
+body {
+    margin: 0;
+    padding:0;
+    font-family: 'Maven Pro', sans-serif;
+}
+
+html {
+    font-size: 10px;
+}
+
+p {
+    font-size:1.4rem;
+}
+
+.content {
+    float:right;
+    width:80%;
+    padding:0 0 0 30px; 
+}
+
+.content h1{
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.filter {
+    float:left;
+    width:20%;
+    padding: 0 0 0 0rem;
+    height:100%;
+}
+.filter h1{
+    text-align: center;
+    text-transform: uppercase;
+}
+.filter form{
+    background:#efefef;
+}
+form ul{
+    list-style: none;
+    padding-left: 30px;
+}
+ul li {
+    font-size: 1.4rem;
+}
+
+ul>li{
+    font-weight: 500;
+    padding: 1rem;
+}
+
+input {
+    border: none;
+}
+
+input[type=number]{
+    font-size:1.4rem;
+    font-weight: bold;
+    height: 25px;
+    width: 150px;
+}
+
+input[type=submit] {
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    font-weight:bold;
+    align-items: center;
+    background:#00abff;
+    color:#fff;
+    padding:10px 20px;
+    font-size:14px;
+    text-transform:uppercase;
+}
+
+a {
+    text-decoration: none;
+}
+.table{
+    background-color: #f0f0f0;
+    padding: 5rem;
+    margin-right: 2.5rem;
+}
+.board-tags{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+.board-tag{
+    background-color: #ffffff;
+    border-radius: 2rem;
+    padding: 3rem;
+    margin-bottom: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-align: center;
+    align-items: center;
+    width: 25rem;
+    transition: 0.5s;
+    border: 1px solid rgba(204, 204, 223, 0.5);
+}
+.board-tag img{
+    width: 9rem;
+}
+.board-tag:hover{
+    cursor: pointer;
+    box-shadow: 0 0 60px 10px rgba(204, 204, 223, 0.71);
+}
+.board-tag span{
+    color: #00abff;
+    font-weight: 500;
+    text-transform: uppercase;
+    font-size: 1.4rem;
+    margin: 3rem auto 1rem;
+}
+.board-tag h4{
+    font-weight: 500;
+    color: #487d99;
+    font-size: 1em;
+    margin: 1rem;
+}
+.board-tag h4 sup{
+    vertical-align: super;
+    font-size: 1.4rem;
+    margin-right: 0.5rem;
+}
+.board-btn{
+    background-color: #ffffff;
+    border: 2px solid rgb(215,219,232);
+    color: #2e4c6b;
+    text-transform: uppercase;
+    font-size: 1rem;
+    font-weight: 700;
+    padding: 1.4rem 4rem;
+    margin: 2rem auto 0;
+    border-radius: 100px;
+    transition: 0.2s;
+    box-shadow: 0 0 18.69px 2.31px rgba(204, 204, 223, 0.5);
+}
+.board-btn:hover{
+    background-color: #00abff;
+    color: #fff;
+    box-shadow: none;
+    cursor: pointer;
+}
+.pagination{
+    font-size: 1.4rem;
+    margin: 1rem;
+    text-align: center;
+}
