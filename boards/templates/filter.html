@@ -1,41 +1,70 @@
+{% load i18n %}
 <div class="filter">
     <div class="text-head">
-        <h1>Фильтр</h1>
+        <h1>{% trans 'Requirements' %}</h1>
     </div>
-    <form>
-        <ul>
-            <li>Категория пользователя
-                <select required>
-                    <option>Новичок</option>
-                    <option>Опытный</option>
-                </select>
-            </li>
-            <li>Кол-во аналог. вх./вых.
-                <input type="number" min="1" max="40">
-            </li>
-            <li>Кол-во цифр. вх./вых.
-                <input type="number" min="1" max="40">
-            </li>
-            <li>Рабочие напряжение
-                <input type="number" min="1" max="5" step="0.1">
-            </li>
-            <li><b>Язык разработки</b>
-                {% for lang in langs %}
-                   <li>
-                       <input type="checkbox">{{ lang.name }}
-                   </li>
-                {% endfor %}
-            </li>
-            <li>Цена
-                 <input type="number" min="100" max="10000" step="0.01">
-            </li>
-            <li>Free IDE
-                <select>
-                    <option>Не важно</option>
-                    <option>Да</option>
-                </select>
-            </li>
-        </ul>
-        <input type="submit">
+    <form action="">
+
+        <div class="main-form">
+            <div class="info">
+                <label>{% trans 'Stakeholder' %}</label>
+                <a class="submit_btn submit_btn-active" id="submit_btn-strq">
+                     <span></span>
+                </a>
+            </div>
+
+            <div class="field" id="contact_form-1">
+                <label for="{{ form.knowledge_level.id_for_label }}">Knowledge level</label>
+                <p>{{ form.knowledge_level }}</p>
+            </div>
+
+            <div class="info">
+                <label>{% trans 'Feature Hardware' %}</label>
+                <a class="submit_btn" id="submit_btn-hw">
+                    <span></span>
+                </a>
+            </div>
+
+            <div class="field" id="contact_form-2">
+                <label for="{{ form.analog.id_for_label }}">Analog I/O</label>
+                <p>{{ form.analog }}</p>
+
+                <label for="{{ form.digit.id_for_label }}">Digit I/O</label>
+                <p>{{ form.digit }}</p>
+
+                <label for="{{ form.voltage.id_for_label }}">Voltage</label>
+                <p>{{ form.voltage }}</p>
+
+                <label for="{{ form.processor_family.id_for_label }}">Processor Family</label>
+                <p>{{ form.processor_family }}</p>
+            </div>
+
+            <div class="info">
+                <label>{% trans 'Feature Software' %}</label>
+                <a class="submit_btn" id="submit_btn-sw">
+                    <span></span>
+                </a>
+            </div>
+            <div class="field" id="contact_form-3">
+                <label for="{{ form.language.id_for_label }}">Language</label>
+                <p>{{ form.language }}</p>
+            </div>
+
+            <div class="info">
+                <label>{% trans 'Supplementary' %}</label>
+                <a class="submit_btn" id="submit_btn-supl">
+                    <span></span>
+                </a>
+            </div>
+            <div class="field" id="contact_form-4">
+                <label for="{{ form.price.id_for_label }}">Price</label>
+                <p>{{ form.price }}</p>
+
+                <label for="{{ form.form.id_for_label }}">Form</label>
+                <p>{{ form.form }}</p>
+            </div>
+
+            <input type="submit" value={% trans 'Send' %}>
+        </div>
     </form>
 </div>

@@ -1,8 +1,24 @@
 {% extends "base.html" %}
-    {% block title %}{{ board.title }}{% endblock %}
-    {% block content %}
+{% block title %}{{ board.title }}{% endblock %}
+{% block content %}
     <h1>{{ board.name }}</h1>
-    <p class="date">
-        Published {{ board.processor }} by {{ board.length }}
-    </p>
+    <div class="detail">
+    <div class="detail-img">
+        <img src="{{ board.image.url }}" alt="" style="width: 40rem">
+    </div>
+
+    <div class="detail-info">
+        <p><b>Processor Family:</b> {{ board.processor.family }}</p>
+        <p><b>Processor:</b> {{ board.processor.name }}</p>
+            {% if board.min_price == board.max_price %}
+                <p><b>Price:</b> {{ board.min_price }}</p>
+            {% else %}
+                <p><b>Price:</b> {{ board.min_price }} - {{ board.max_price }}</p>
+            {% endif %}
+            <p><b>Form-Factor:</b> {{ board.length }} x {{ board.width }}</p>
+            <p><b>Analog :</b> {{ board.analog_port }}</p>
+            <p><b>Digital :</b> {{ board.digital_port }}</p>
+            <p><b>Power:</b> {{ board.power }}</p>
+    </div>
+    </div>
 {% endblock %}

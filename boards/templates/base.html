@@ -1,16 +1,88 @@
 {% load staticfiles %}
+{% load i18n %}
 <!DOCTYPE html>
 <html>
-<head>
+<head lang="{{ LANGUAGE_CODE }}">
     <title>{% block title %}{% endblock %}</title>
     <link href="{% static "css/board.css" %}" rel="stylesheet">
 </head>
 <body>
-    {% block filter %}
-    {% endblock %}
+
+    <header>
+        <ul class="menu">
+            <li>
+                <form id='lang_en' action='{% url 'set_language' %}' method='POST'>{% csrf_token %}
+                    <input type='hidden' name='language' value='en'/>
+                    <a href='#' title='English' onclick="document.getElementById('lang_en').submit()">
+                        <img src="{% static 'img/flag/en.png' %}" style="width: 40px; height: 25px"/>
+                    </a>
+                </form>
+            </li>
+            <li>
+                <form id='lang_ru' action='{% url 'set_language' %}' method='POST'>{% csrf_token %}
+                    <input type='hidden' name='language' value='ru'/>
+                    <a href='#' title='Russian' onclick="document.getElementById('lang_ru').submit()">
+                        <img src="{% static 'img/flag/ru.png' %}" style="width: 40px; height: 25px"/>
+                    </a>
+                </form>
+            </li>
+        </ul>
+    </header>
+
     <div class="content">
         {% block content %}
         {% endblock %}
     </div>
+
 </body>
 </html>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+
+     $('#contact_form-1').show();
+     $('#submit_btn-strq').click(function() {
+         $('#contact_form-1').toggle();
+     });
+
+     $('#contact_form-2').hide();
+     $('#submit_btn-hw').click(function() {
+         $('#contact_form-2').toggle();
+     });
+
+     $('#contact_form-3').hide();
+     $('#submit_btn-sw').click(function() {
+         $('#contact_form-3').toggle();
+     });
+
+     $('#contact_form-4').hide();
+     $('#submit_btn-supl').click(function() {
+         $('#contact_form-4').toggle();
+     });
+
+    });
+</script>
+
+<script type="text/javascript">
+$(document).ready(function() {
+    var btn1 = $('#submit_btn-strq');
+    var btn2 = $('#submit_btn-hw');
+    var btn3 = $('#submit_btn-sw');
+    var btn4 = $('#submit_btn-supl');
+
+    btn1.click(function () {
+        btn1.toggleClass('submit_btn-active');
+    });
+    btn2.click(function () {
+        btn2.toggleClass('submit_btn-active');
+    });
+    btn3.click(function () {
+        btn3.toggleClass('submit_btn-active');
+    });
+    btn4.click(function () {
+        btn4.toggleClass('submit_btn-active');
+    });
+
+});
+</script>

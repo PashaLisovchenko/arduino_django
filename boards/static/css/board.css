@@ -1,4 +1,5 @@
-*, *:before, *:after{
+/*base settings*/
+*, *:before, *:after {
     box-sizing: border-box;
 }
 body {
@@ -6,19 +7,23 @@ body {
     padding:0;
     font-family: 'Maven Pro', sans-serif;
 }
-
 html {
     font-size: 10px;
 }
-
 p {
     font-size:1.4rem;
 }
-
-.content {
+a {
+    text-decoration: none;
+}
+/*base html*/
+header ul.menu {
+    list-style:none;
+    margin-right: 3rem;
+}
+header ul.menu li {
     float:right;
-    width:80%;
-    padding:0 0 0 30px; 
+    padding: .4rem .3rem;
 }
 
 .content h1{
@@ -26,10 +31,10 @@ p {
     text-transform: uppercase;
 }
 
+/*filter html*/
 .filter {
-    float:left;
-    width:20%;
-    padding: 0 0 0 0rem;
+    margin-top: 2rem;
+    padding: 0 20px 0 0;
     height:100%;
 }
 .filter h1{
@@ -38,51 +43,107 @@ p {
 }
 .filter form{
     background:#efefef;
+    overflow:auto;
 }
-form ul{
-    list-style: none;
-    padding-left: 30px;
+.main-form{
+    width:100%;
 }
-ul li {
-    font-size: 1.4rem;
+.info{
+    display: block;
+    height: 3rem;
+    margin: 1rem;
 }
-
-ul>li{
-    font-weight: 500;
-    padding: 1rem;
+.info label {
+    font-size: 1.5rem;
+    float:left;
+    clear:both;
+    color:#333;
+    margin-top:.5rem;
 }
-
-input {
-    border: none;
-}
-
-input[type=number]{
-    font-size:1.4rem;
-    font-weight: bold;
+.submit_btn{
+    position: relative;
+    font-size: 1.5rem;
+    display: block;
+    background-color: #ffffff;
+    float: right;
+    border-radius: 50%;
+    box-shadow: 1px 1px 5px rgba(0,0,0,.4);
+    padding: .2rem .5rem;
+    margin-top: .2rem;
+    width: 25px;
     height: 25px;
-    width: 150px;
+}
+.submit_btn span, span:before, span:after {
+    display: block;
+    height: 1px;
+    width: 17px;
+    position: absolute;
+    top: 52%;
+    left: 50%;
+    margin-top: -1px;
+    margin-left: -8.5px;
+    background-color: #333333;
+}
+.submit_btn span:before{
+    transition: all 0.2s;
+    content: '';
+    height: 17px;
+    width: 1px;
+    margin-left: -1px;
+    margin-top: -8.5px;
+}
+.submit_btn-active span{
+    background-color: transparent;
+}
+.submit_btn-active span:before{
+    -webkit-transform: rotate(90deg);
+    -moz-transform: rotate(90deg);
+    -ms-transform: rotate(90deg);
+    -o-transform: rotate(90deg);
+    transform: rotate(90deg);
+}
+.field {
+    background-color: #e7e7e7;
+    clear: both;
+    text-align: center;
+    border-radius: 1rem;
+    padding-top: 1rem;
+    font-size: 1.3rem;
+    padding-bottom: .3rem
+}
+input, select{
+    clear:both;
+    background: #ffffff;
+    border:0;
+    padding:.6rem 1rem;
+    font-size:1.4rem;
+    margin-bottom: 1rem;
+    width: 20rem;
 }
 
 input[type=submit] {
-    margin-left: auto;
-    margin-right: auto;
-    display: block;
+    width: 100%;
+    border-radius: 1rem;
     font-weight:bold;
-    align-items: center;
-    background:#00abff;
+    margin-top: 1rem;
+    background:#5993bb;
     color:#fff;
     padding:10px 20px;
     font-size:14px;
     text-transform:uppercase;
 }
-
-a {
-    text-decoration: none;
+/*pagination html*/
+.pagination{
+    font-size: 1.4rem;
+    margin: 1rem;
+    text-align: center;
 }
+
+/*board list*/
 .table{
     background-color: #f0f0f0;
     padding: 5rem;
-    margin-right: 2.5rem;
+    margin: 2.5rem;
 }
 .board-tags{
     display: flex;
@@ -104,9 +165,10 @@ a {
     width: 25rem;
     transition: 0.5s;
     border: 1px solid rgba(204, 204, 223, 0.5);
+    height: 300px;
 }
 .board-tag img{
-    width: 9rem;
+    width: 10rem;
 }
 .board-tag:hover{
     cursor: pointer;
@@ -144,13 +206,57 @@ a {
     box-shadow: 0 0 18.69px 2.31px rgba(204, 204, 223, 0.5);
 }
 .board-btn:hover{
-    background-color: #00abff;
+    background-color: #5993bb;
     color: #fff;
     box-shadow: none;
     cursor: pointer;
 }
-.pagination{
-    font-size: 1.4rem;
-    margin: 1rem;
-    text-align: center;
+
+.requirements{
+    float: left;
+    width: 270px;
+}
+
+.sidebar {
+    padding:0 20px 0 0;
+}
+
+.sidebar ul{
+    margin:0;
+    padding:0;
+}
+
+.sidebar ul li {
+    margin:0;
+    list-style:none;
+    padding:10px 14px;
+}
+
+.sidebar ul li a {
+    font-weight: 300;
+    display:block;
+    color: #333;
+    font-size: 1.5rem;
+}
+
+.sidebar ul li.selected {
+    background:#5993bb;
+    border-radius:4px;
+}
+
+.sidebar ul li.selected a {
+    color:#fff;
+}
+
+
+/*board detail*/
+.detail{
+    display: inline-block;
+}
+.detail-info{
+    float: right;
+    margin: 3rem;
+}
+.detail-img{
+    float: left;
 }

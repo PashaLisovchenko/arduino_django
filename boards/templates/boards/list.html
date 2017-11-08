@@ -1,24 +1,46 @@
 {% extends "base.html" %}
-{% block title %}Boards{% endblock %}
+{% load i18n %}
+{% block title %}{% trans "Boards" %}{% endblock %}
 
-{% block filter %}
-    {% include "filter.html" with langs=lang %}
-{% endblock %}
+
 {% block content %}
-<h1>Boards</h1>
 <div class="table">
+
+    <div class="requirements">
+
+        <div class="sidebar">
+            <h1>Categories</h1>
+            <ul>
+                <li {% if not category %}class="selected"{% endif %}>
+                    <a href="{% url "boards:board_list" %}">All</a>
+                </li>
+                {% for c in categories %}
+                    <li {% if category.slug == c.slug %}class="selected"{% endif %}>
+                        <a href="{{ c.get_absolute_url }}">{{ c.name }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% include "filter.html" with form=form %}
+
+    </div>
+
+    <h1>{% trans "Boards" %}</h1>
     <div class="board-tags">
         {% for board in boards %}
             <div class="board-tag">
-                <img src="https://cdn-reichelt.de/bilder/web/xxl_ws/B300/ARDUINO_UNO_A06.png" alt="">
+                <img src="{{ board.image.url }}" alt="">
                 <span>{{ board.name }}</span>
                 <h4>{{ board.processor }}</h4>
                 <a href="{{ board.get_absolute_url }}">
-                    <button class="board-btn">detail</button>
+                    <button class="board-btn">{% trans 'Detail' %}</button>
                 </a>
             </div>
         {% endfor %}
     </div>
+    <div style="clear:both;"></div>
 </div>
-        {% include "pagination.html" with page=boards %}
+    {% if page_obj %}
+        {% include "pagination.html" with page=page_obj %}
+    {% endif %}
 {% endblock %}
