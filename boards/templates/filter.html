@@ -3,7 +3,8 @@
     <div class="text-head">
         <h1>{% trans 'Requirements' %}</h1>
     </div>
-    <form action="">
+    <form action="" method="POST">
+        {% csrf_token %}
 
         <div class="main-form">
             <div class="info">
