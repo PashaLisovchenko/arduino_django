@@ -1,0 +1,145 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-12-13 19:49+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+
+#: arduino_django/settings.py:116
+msgid "Russian"
+msgstr "Російська"
+
+#: arduino_django/settings.py:117
+msgid "English"
+msgstr "Англійська"
+
+#: arduino_django/settings.py:118
+msgid "Ukrainian"
+msgstr "Українська"
+
+#: boards/forms.py:8
+msgid "Beginner"
+msgstr "Початківець"
+
+#: boards/forms.py:8
+msgid "Professional"
+msgstr "Професіонал"
+
+#: boards/templates/boards/detail.html:12 boards/templates/filter.html:39
+msgid "Processor Family"
+msgstr "Сімейство процесорів"
+
+#: boards/templates/boards/detail.html:13
+msgid "Processor"
+msgstr "Процесор"
+
+#: boards/templates/boards/detail.html:15
+#: boards/templates/boards/detail.html:17 boards/templates/filter.html:61
+msgid "Price"
+msgstr "Ціна"
+
+#: boards/templates/boards/detail.html:19
+msgid "Form-Factor"
+msgstr "Розміри плати"
+
+#: boards/templates/boards/detail.html:20
+msgid "Analog"
+msgstr "Аналогових входів/виходів"
+
+#: boards/templates/boards/detail.html:21
+msgid "Digital"
+msgstr "Цифрових входів/виходів"
+
+#: boards/templates/boards/detail.html:22 boards/templates/filter.html:36
+msgid "Voltage"
+msgstr "Живлення"
+
+#: boards/templates/boards/list.html:3 boards/templates/boards/list.html:28
+msgid "Boards"
+msgstr "Плати"
+
+#: boards/templates/boards/list.html:12
+msgid "Categories"
+msgstr "Категорії"
+
+#: boards/templates/boards/list.html:15
+msgid "All"
+msgstr "Всі"
+
+#: boards/templates/boards/list.html:36
+msgid "Detail"
+msgstr "Детально"
+
+#: boards/templates/filter.html:4
+msgid "Requirements"
+msgstr "Вимоги"
+
+#: boards/templates/filter.html:11
+msgid "Stakeholder"
+msgstr "Користувач"
+
+#: boards/templates/filter.html:18
+msgid "Knowledge level"
+msgstr "Рівень знань"
+
+#: boards/templates/filter.html:23
+msgid "Feature Hardware"
+msgstr "Функц. Аппаратні"
+
+#: boards/templates/filter.html:30
+msgid "Analog I/O"
+msgstr "Аналогові входи/виходи"
+
+#: boards/templates/filter.html:33
+msgid "Digit I/O"
+msgstr "Цифрові входи/виходи"
+
+#: boards/templates/filter.html:44
+msgid "Feature Software"
+msgstr "Функц. Програмні"
+
+#: boards/templates/filter.html:50
+msgid "Language"
+msgstr "Мова програмування"
+
+#: boards/templates/filter.html:55
+msgid "Supplementary"
+msgstr "Нефункціональні"
+
+#: boards/templates/filter.html:64
+msgid "Form"
+msgstr "Розміри"
+
+#: boards/templates/filter.html:68
+msgid "Send"
+msgstr "Відправити"
+
+#: boards/templates/pagination.html:5
+msgid "Previous"
+msgstr "Попередня"
+
+#: boards/templates/pagination.html:9
+msgid "Page"
+msgstr "Сторінка"
+
+#: boards/templates/pagination.html:9
+msgid "of"
+msgstr "з"
+
+#: boards/templates/pagination.html:13
+msgid "Next"
+msgstr "Наступна"
