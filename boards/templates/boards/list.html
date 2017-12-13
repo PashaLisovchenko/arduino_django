@@ -9,10 +9,10 @@
     <div class="requirements">
 
         <div class="sidebar">
-            <h1>Categories</h1>
+            <h1>{% trans "Categories" %}</h1>
             <ul>
                 <li {% if not category %}class="selected"{% endif %}>
-                    <a href="{% url "boards:board_list" %}">All</a>
+                    <a href="{% url "boards:board_list" %}">{% trans "All" %}</a>
                 </li>
                 {% for c in categories %}
                     <li {% if category.slug == c.slug %}class="selected"{% endif %}>

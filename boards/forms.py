@@ -1,11 +1,11 @@
 from django import forms
 from .models import Languages, FamilyProcessor
-
+from django.utils.translation import ugettext_lazy as _
 
 language_obj = Languages.objects.all()
 family_obj = FamilyProcessor.objects.all()
 
-STAKEHOLDERS = ['Beginner', 'Professional']
+STAKEHOLDERS = [_('Beginner'), _('Professional')]
 STAKEHOLDERS_CHOICES = [(i.lower(), i) for i in STAKEHOLDERS]
 
 

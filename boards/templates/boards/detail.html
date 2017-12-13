@@ -1,24 +1,25 @@
 {% extends "base.html" %}
+{% load i18n %}
 {% block title %}{{ board.title }}{% endblock %}
 {% block content %}
     <h1>{{ board.name }}</h1>
     <div class="detail">
-    <div class="detail-img">
-        <img src="{{ board.image.url }}" alt="" style="width: 40rem">
-    </div>
+        <div class="detail-img">
+            <img src="{{ board.image.url }}" alt="" style="width: 40rem">
+        </div>
 
-    <div class="detail-info">
-        <p><b>Processor Family:</b> {{ board.processor.family }}</p>
-        <p><b>Processor:</b> {{ board.processor.name }}</p>
-            {% if board.min_price == board.max_price %}
-                <p><b>Price:</b> {{ board.min_price }}</p>
-            {% else %}
-                <p><b>Price:</b> {{ board.min_price }} - {{ board.max_price }}</p>
-            {% endif %}
-            <p><b>Form-Factor:</b> {{ board.length }} x {{ board.width }}</p>
-            <p><b>Analog :</b> {{ board.analog_port }}</p>
-            <p><b>Digital :</b> {{ board.digital_port }}</p>
-            <p><b>Power:</b> {{ board.power }}</p>
-    </div>
+        <div class="detail-info">
+            <p><b>{% trans "Processor Family" %}:</b> {{ board.processor.family }}</p>
+            <p><b>{% trans "Processor" %}:</b> {{ board.processor.name }}</p>
+                {% if board.min_price == board.max_price %}
+                    <p><b>{% trans "Price" %}:</b> {{ board.min_price }}</p>
+                {% else %}
+                    <p><b>{% trans "Price" %}:</b> {{ board.min_price }} - {{ board.max_price }}</p>
+                {% endif %}
+                <p><b>{% trans "Form-Factor" %}:</b> {{ board.length }} x {{ board.width }}</p>
+                <p><b>{% trans "Analog" %}:</b> {{ board.analog_port }}</p>
+                <p><b>{% trans "Digital" %}:</b> {{ board.digital_port }}</p>
+                <p><b>{% trans "Voltage" %}:</b> {{ board.power }}</p>
+        </div>
     </div>
 {% endblock %}

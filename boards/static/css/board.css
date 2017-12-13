@@ -167,9 +167,10 @@ input[type=submit] {
     border: 1px solid rgba(204, 204, 223, 0.5);
     height: 300px;
 }
-.board-tag img{
-    width: 10rem;
-}
+/*.board-tag img{*/
+    /*width: 10rem;*/
+    /*height: 10rem;*/
+/*}*/
 .board-tag:hover{
     cursor: pointer;
     box-shadow: 0 0 60px 10px rgba(204, 204, 223, 0.71);
