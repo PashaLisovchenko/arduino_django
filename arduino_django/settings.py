@@ -114,6 +114,7 @@ _ = lambda s: s
 LANGUAGES = (
     ('ru', _('Russian')),
     ('en', _('English')),
+    ('ua', _('Ukraine')),
 )
 
 LOCALE_PATHS = (
