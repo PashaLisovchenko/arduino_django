@@ -8,6 +8,9 @@ family_obj = FamilyProcessor.objects.all()
 STAKEHOLDERS = [_('Beginner'), _('Professional')]
 STAKEHOLDERS_CHOICES = [(i.lower(), i) for i in STAKEHOLDERS]
 
+FORM_FACTOR = ['', _('Small'), _('Medium'), _('Large')]
+FORM_FACTOR_CHOICES = [(i.lower(), i) for i in FORM_FACTOR]
+
 
 class RequirementsForm(forms.Form):
     knowledge_level = forms.ChoiceField(choices=STAKEHOLDERS_CHOICES)
@@ -20,4 +23,4 @@ class RequirementsForm(forms.Form):
     language = forms.ModelChoiceField(queryset=language_obj, required=False)
 
     price = forms.DecimalField(min_value=0, decimal_places=2, required=False)
-    form = forms.IntegerField(required=False)
+    form = forms.ChoiceField(choices=FORM_FACTOR_CHOICES, required=False)

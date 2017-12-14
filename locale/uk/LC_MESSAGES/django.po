@@ -39,6 +39,18 @@ msgstr "Початківець"
 msgid "Professional"
 msgstr "Професіонал"
 
+#: boards/forms.py:11
+msgid "Small"
+msgstr "Невелика"
+
+#: boards/forms.py:11
+msgid "Medium"
+msgstr "Середня"
+
+#: boards/forms.py:11
+msgid "Large"
+msgstr "Велика"
+
 #: boards/templates/boards/detail.html:12 boards/templates/filter.html:39
 msgid "Processor Family"
 msgstr "Сімейство процесорів"
