@@ -53,14 +53,14 @@ class Board(models.Model):
     programming_languages = models.ManyToManyField(Languages, blank=True)
     free_ide = models.ManyToManyField(IDE, blank=True)
     # Сообщество/открытость
-    community_openness = models.DecimalField(max_digits=2, decimal_places=1)
+    community_openness = models.DecimalField(max_digits=2, decimal_places=1, db_index=True)
     # Порог вхождения
-    entry_threshold = models.IntegerField()
+    entry_threshold = models.DecimalField(max_digits=2, decimal_places=1, db_index=True)
     power = models.DecimalField(max_digits=3, decimal_places=1)
     analog_port = models.IntegerField()
     digital_port = models.IntegerField()
-    width = models.DecimalField(max_digits=3, decimal_places=1)
-    length = models.DecimalField(max_digits=3, decimal_places=1)
+    width = models.DecimalField(max_digits=3, decimal_places=1, db_index=True)
+    length = models.DecimalField(max_digits=3, decimal_places=1, db_index=True)
     min_price = models.DecimalField(default=0.0, max_digits=6, decimal_places=2)
     max_price = models.DecimalField(max_digits=6, decimal_places=2)
 

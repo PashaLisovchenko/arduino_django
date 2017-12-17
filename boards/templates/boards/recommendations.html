@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% trans "Boards" %}{% endblock %}
+
+
+{% block content %}
+<div class="table">
+    <h1>{% trans "Boards" %}</h1>
+
+    {% if boards %}
+        <div class="board-tags">
+            {% for board in boards %}
+                <div class="board-tag">
+                    <img src="{{ board.image.url }}" alt="">
+                    <span>{{ board.name }}</span>
+                    <h4>{{ board.processor }}</h4>
+                    <a href="{{ board.get_absolute_url }}">
+                        <button class="board-btn">{% trans 'Detail' %}</button>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>Так как вы указали не достаточно данных мы выдали вам лушие плапы по категория которые вы ввели</p>
+        <div class="board-tags">
+        {% if  boards_form %}
+            <div class="board-tag">
+                <p>boards_form</p>
+                <img src="{{ boards_form.first.image.url }}" alt="">
+                <span>{{ boards_form.first.name }}</span>
+                <h4>{{ boards_form.first.processor }}</h4>
+                <a href="{{ boards_form.first.get_absolute_url }}">
+                    <button class="board-btn">{% trans 'Detail' %}</button>
+                </a>
+            </div>
+        {% endif %}
+        {% if  boards_processor %}
+            <div class="board-tag">
+                <p>boards_processor</p>
+                <img src="{{ boards_processor.first.image.url }}" alt="">
+                <span>{{ boards_processor.first.name }}</span>
+                <h4>{{ boards_processor.first.processor }}</h4>
+                <a href="{{ boards_processor.first.get_absolute_url }}">
+                    <button class="board-btn">{% trans 'Detail' %}</button>
+                </a>
+            </div>
+        {% endif %}
+        {% if  boards_language %}
+            <div class="board-tag">
+                <p>boards_language</p>
+                <img src="{{ boards_language.first.image.url }}" alt="">
+                <span>{{ boards_language.first.name }}</span>
+                <h4>{{ boards_language.first.processor }}</h4>
+                <a href="{{ boards_language.first.get_absolute_url }}">
+                    <button class="board-btn">{% trans 'Detail' %}</button>
+                </a>
+            </div>
+        {% endif %}
+        </div>
+    {% endif %}
+    <div style="clear:both;"></div>
+</div>
+{% endblock %}
