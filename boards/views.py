@@ -22,6 +22,218 @@ def get_board_form(req, boards):
     return boards_form
 
 
+def get_board(req, object_list, request):
+    know_level = 2
+    if req['knowledge_level'] == 'professional':
+        # boards = платы по уровню знаний
+        boards = object_list.annotate(knowledge_level=F('community_openness') + F('entry_threshold')) \
+            .filter(knowledge_level__lte=know_level)
+    else:
+        # boards = платы по уровню знаний
+        boards = object_list.annotate(knowledge_level=F('community_openness')+F('entry_threshold')) \
+            .filter(knowledge_level__gt=know_level)
+    kl = boards
+
+    if req['processor_family'] and req['language'] and req['form']:
+        boards_form = get_board_form(req, boards)
+        boards = boards_form.filter(processor__family_id=req['processor_family'],
+                                    programming_languages__id=req['language'])
+        print("['processor_family'] and ['language'] and ['form']")
+        print(boards)
+
+        if boards:
+            # после сужения, платы есть
+            if len(boards) == 1:
+                # вывод платы если она одна
+                return render(request, 'boards/recommendations.html', context={'boards': boards})
+            elif len(boards) > 1:
+                boards = get_distance_boards(boards, analog=req['analog'], digit=req['digit'],
+                                             voltage=req['voltage'], price=req['price'])
+                return render(request, 'boards/recommendations.html', context={'boards': boards})
+        else:
+            kl = object_list.all()
+            # после сужения плат нету, ищем лучшие результаты по категориям отдельно
+            boards_form = get_board_form(req, kl)
+            boards_processor = kl.filter(processor__family_id=req['processor_family'])
+            boards_language = kl.filter(programming_languages__id=req['language'])
+
+            boards_form = get_distance_boards(boards_form, analog=req['analog'], digit=req['digit'],
+                                              voltage=req['voltage'], price=req['price'])
+            boards_processor = get_distance_boards(boards_processor, analog=req['analog'],
+                                                   digit=req['digit'], voltage=req['voltage'], price=req['price'])
+            boards_language = get_distance_boards(boards_language, analog=req['analog'],
+                                                  digit=req['digit'], voltage=req['voltage'], price=req['price'])
+            return render(request, 'boards/recommendations.html',
+                          context={'boards_form': boards_form,
+                                   'boards_processor': boards_processor,
+                                   'boards_language': boards_language
+                                   })
+
+    elif req['processor_family'] and req['language']:
+        boards = boards.filter(processor__family_id=req['processor_family'],
+                               programming_languages__id=req['language'])
+
+        print("['processor_family'] and ['language']")
+        print(boards)
+
+        if boards:
+            # после сужения, платы есть
+            if len(boards) == 1:
+                # вывод платы если она одна
+                return render(request, 'boards/recommendations.html', context={'boards': boards})
+            elif len(boards) > 1:
+                boards = get_distance_boards(boards, analog=req['analog'], digit=req['digit'],
+                                             voltage=req['voltage'], price=req['price'])
+                return render(request, 'boards/recommendations.html', context={'boards': boards})
+        else:
+            kl = object_list.all()
+            # после сужения плат нету, ищем лучшие результаты по категориям отдельно
+            boards_processor = kl.filter(processor__family_id=req['processor_family'])
+            boards_language = kl.filter(programming_languages__id=req['language'])
+
+            boards_processor = get_distance_boards(boards_processor, analog=req['analog'],
+                                                   digit=req['digit'], voltage=req['voltage'], price=req['price'])
+            boards_language = get_distance_boards(boards_language, analog=req['analog'],
+                                                  digit=req['digit'], voltage=req['voltage'], price=req['price'])
+            return render(request, 'boards/recommendations.html',
+                          context={'boards_processor': boards_processor,
+                                   'boards_language': boards_language
+                                   })
+    elif req['processor_family'] and req['form']:
+        boards_form = get_board_form(req, boards)
+        boards = boards_form.filter(processor__family_id=req['processor_family'])
+
+        print("['processor_family'] and ['form']")
+        print(boards)
+
+        if boards:
+            # после сужения, платы есть
+            if len(boards) == 1:
+                # вывод платы если она одна
+                return render(request, 'boards/recommendations.html', context={'boards': boards})
+            elif len(boards) > 1:
+                boards = get_distance_boards(boards, analog=req['analog'], digit=req['digit'],
+                                             voltage=req['voltage'], price=req['price'])
+                return render(request, 'boards/recommendations.html', context={'boards': boards})
+        else:
+            kl = object_list.all()
+            # после сужения плат нету, ищем лучшие результаты по категориям отдельно
+            boards_form = get_board_form(req, kl)
+            boards_processor = kl.filter(processor__family_id=req['processor_family'])
+
+            boards_form = get_distance_boards(boards_form, analog=req['analog'], digit=req['digit'],
+                                              voltage=req['voltage'], price=req['price'])
+            boards_processor = get_distance_boards(boards_processor, analog=req['analog'],
+                                                   digit=req['digit'], voltage=req['voltage'], price=req['price'])
+            return render(request, 'boards/recommendations.html',
+                          context={'boards_form': boards_form,
+                                   'boards_processor': boards_processor
+                                   })
+    elif req['language'] and req['form']:
+        boards_form = get_board_form(req, boards)
+        boards = boards_form.filter(programming_languages__id=req['language'])
+
+        print("['language'] and ['form']")
+        print(boards)
+        if boards:
+            # после сужения, платы есть
+            if len(boards) == 1:
+                # вывод платы если она одна
+                return render(request, 'boards/recommendations.html', context={'boards': boards})
+            elif len(boards) > 1:
+                boards = get_distance_boards(boards, analog=req['analog'], digit=req['digit'],
+                                             voltage=req['voltage'], price=req['price'])
+                return render(request, 'boards/recommendations.html', context={'boards': boards})
+        else:
+            kl = object_list.all()
+            # после сужения плат нету, ищем лучшие результаты по категориям отдельно
+            boards_form = get_board_form(req, kl)
+            boards_language = kl.filter(programming_languages__id=req['language'])
+
+            boards_form = get_distance_boards(boards_form, analog=req['analog'], digit=req['digit'],
+                                              voltage=req['voltage'], price=req['price'])
+            boards_language = get_distance_boards(boards_language, analog=req['analog'],
+                                                  digit=req['digit'], voltage=req['voltage'], price=req['price'])
+            return render(request, 'boards/recommendations.html',
+                          context={'boards_form': boards_form,
+                                   'boards_language': boards_language
+                                   })
+
+    elif req['processor_family']:
+        boards = boards.filter(processor__family_id=req['processor_family'])
+
+        print("['processor_family']")
+        print(boards)
+        if boards:
+            # после сужения, платы есть
+            if len(boards) == 1:
+                # вывод платы если она одна
+                return render(request, 'boards/recommendations.html', context={'boards': boards})
+            elif len(boards) > 1:
+                boards = get_distance_boards(boards, analog=req['analog'], digit=req['digit'],
+                                             voltage=req['voltage'], price=req['price'])
+                return render(request, 'boards/recommendations.html', context={'boards': boards})
+        else:
+            # после сужения плат нету, ищем лучшие результаты по категориям отдельно
+            kl = object_list.all()
+            boards_processor = kl.filter(processor__family_id=req['processor_family'])
+
+            boards_processor = get_distance_boards(boards_processor, analog=req['analog'],
+                                                   digit=req['digit'], voltage=req['voltage'], price=req['price'])
+            return render(request, 'boards/recommendations.html',
+                          context={'boards_processor': boards_processor})
+    elif req['language']:
+        boards = boards.filter(programming_languages__id=req['language'])
+
+        print("['language']")
+        print(boards)
+        if boards:
+            # после сужения, платы есть
+            if len(boards) == 1:
+                # вывод платы если она одна
+                return render(request, 'boards/recommendations.html', context={'boards': boards})
+            elif len(boards) > 1:
+                boards = get_distance_boards(boards, analog=req['analog'], digit=req['digit'],
+                                             voltage=req['voltage'], price=req['price'])
+                return render(request, 'boards/recommendations.html', context={'boards': boards})
+        else:
+            kl = object_list.all()
+            # после сужения плат нету, ищем лучшие результаты по категориям отдельно
+            boards_language = kl.filter(programming_languages__id=req['language'])
+            boards_language = get_distance_boards(boards_language, analog=req['analog'],
+                                                  digit=req['digit'], voltage=req['voltage'], price=req['price'])
+            return render(request, 'boards/recommendations.html',
+                          context={'boards_language': boards_language})
+    elif req['form']:
+        boards = get_board_form(req, boards)
+        print("['form']")
+        print(boards)
+        if boards:
+            # после сужения, платы есть
+            if len(boards) == 1:
+                # вывод платы если она одна
+                return render(request, 'boards/recommendations.html', context={'boards': boards})
+            elif len(boards) > 1:
+                boards = get_distance_boards(boards, analog=req['analog'], digit=req['digit'],
+                                             voltage=req['voltage'], price=req['price'])
+                return render(request, 'boards/recommendations.html', context={'boards': boards})
+        else:
+            kl = object_list.all()
+            # после сужения плат нету, ищем лучшие результаты по категориям отдельно
+            boards_form = get_board_form(req, kl)
+
+            boards_form = get_distance_boards(boards_form, analog=req['analog'], digit=req['digit'],
+                                              voltage=req['voltage'], price=req['price'])
+            return render(request, 'boards/recommendations.html',
+                          context={'boards_form': boards_form})
+    else:
+        # Если пользователь невводил ни каких жестких параметров
+        # То мы получаем все платы по уровню знаний
+        boards = get_distance_boards(kl, analog=req['analog'], digit=req['digit'],
+                                     voltage=req['voltage'], price=req['price'])
+        return render(request, 'boards/recommendations.html', context={'boards': boards})
+
+
 def get_distance_boards(boards, analog=None, digit=None, voltage=None, price=None):
     if analog and digit and voltage and price:
         boards = boards.annotate(expires=ExpressionWrapper(
@@ -145,215 +357,217 @@ class BoardList(FormMixin, ListView):
     def form_valid(self, form):
         print(self.request.POST)
         req = self.request.POST
-        know_level = 2
-        if req['knowledge_level'] == 'professional':
-            # boards = платы по уровню знаний
-            boards = Board.objects.annotate(knowledge_level=F('community_openness') + F('entry_threshold')) \
-                .filter(knowledge_level__lte=know_level)
-        else:
-            # boards = платы по уровню знаний
-            boards = Board.objects.annotate(knowledge_level=F('community_openness')+F('entry_threshold')) \
-                .filter(knowledge_level__gt=know_level)
-        kl = boards
-
-        if req['processor_family'] and req['language'] and req['form']:
-            boards_form = get_board_form(req, boards)
-            boards = boards_form.filter(processor__family_id=req['processor_family'],
-                                        programming_languages__id=req['language'])
-            print("['processor_family'] and ['language'] and ['form']")
-            print(boards)
-
-            if boards:
-                # после сужения, платы есть
-                if len(boards) == 1:
-                    # вывод платы если она одна
-                    return render(self.request, 'boards/recommendations.html', context={'boards': boards})
-                elif len(boards) > 1:
-                    boards = get_distance_boards(boards, analog=req['analog'], digit=req['digit'],
-                                                 voltage=req['voltage'], price=req['price'])
-                    return render(self.request, 'boards/recommendations.html', context={'boards': boards})
-            else:
-                kl = Board.objects.all()
-                # после сужения плат нету, ищем лучшие результаты по категориям отдельно
-                boards_form = get_board_form(req, kl)
-                boards_processor = kl.filter(processor__family_id=req['processor_family'])
-                boards_language = kl.filter(programming_languages__id=req['language'])
-
-                boards_form = get_distance_boards(boards_form, analog=req['analog'], digit=req['digit'],
-                                                  voltage=req['voltage'], price=req['price'])
-                boards_processor = get_distance_boards(boards_processor, analog=req['analog'],
-                                                       digit=req['digit'], voltage=req['voltage'], price=req['price'])
-                boards_language = get_distance_boards(boards_language, analog=req['analog'],
-                                                      digit=req['digit'], voltage=req['voltage'], price=req['price'])
-                return render(self.request, 'boards/recommendations.html',
-                              context={'boards_form': boards_form,
-                                       'boards_processor': boards_processor,
-                                       'boards_language': boards_language
-                                       })
-
-        elif req['processor_family'] and req['language']:
-            boards = boards.filter(processor__family_id=req['processor_family'],
-                                   programming_languages__id=req['language'])
-
-            print("['processor_family'] and ['language']")
-            print(boards)
-
-            if boards:
-                # после сужения, платы есть
-                if len(boards) == 1:
-                    # вывод платы если она одна
-                    return render(self.request, 'boards/recommendations.html', context={'boards': boards})
-                elif len(boards) > 1:
-                    boards = get_distance_boards(boards, analog=req['analog'], digit=req['digit'],
-                                                 voltage=req['voltage'], price=req['price'])
-                    return render(self.request, 'boards/recommendations.html', context={'boards': boards})
-            else:
-                kl = Board.objects.all()
-                # после сужения плат нету, ищем лучшие результаты по категориям отдельно
-                boards_processor = kl.filter(processor__family_id=req['processor_family'])
-                boards_language = kl.filter(programming_languages__id=req['language'])
-
-                boards_processor = get_distance_boards(boards_processor, analog=req['analog'],
-                                                       digit=req['digit'], voltage=req['voltage'], price=req['price'])
-                boards_language = get_distance_boards(boards_language, analog=req['analog'],
-                                                      digit=req['digit'], voltage=req['voltage'], price=req['price'])
-                return render(self.request, 'boards/recommendations.html',
-                              context={'boards_processor': boards_processor,
-                                       'boards_language': boards_language
-                                       })
-        elif req['processor_family'] and req['form']:
-            boards_form = get_board_form(req, boards)
-            boards = boards_form.filter(processor__family_id=req['processor_family'])
-
-            print("['processor_family'] and ['form']")
-            print(boards)
-
-            if boards:
-                # после сужения, платы есть
-                if len(boards) == 1:
-                    # вывод платы если она одна
-                    return render(self.request, 'boards/recommendations.html', context={'boards': boards})
-                elif len(boards) > 1:
-                    boards = get_distance_boards(boards, analog=req['analog'], digit=req['digit'],
-                                                 voltage=req['voltage'], price=req['price'])
-                    return render(self.request, 'boards/recommendations.html', context={'boards': boards})
-            else:
-                kl = Board.objects.all()
-                # после сужения плат нету, ищем лучшие результаты по категориям отдельно
-                boards_form = get_board_form(req, kl)
-                boards_processor = kl.filter(processor__family_id=req['processor_family'])
-
-                boards_form = get_distance_boards(boards_form, analog=req['analog'], digit=req['digit'],
-                                                  voltage=req['voltage'], price=req['price'])
-                boards_processor = get_distance_boards(boards_processor, analog=req['analog'],
-                                                       digit=req['digit'], voltage=req['voltage'], price=req['price'])
-                return render(self.request, 'boards/recommendations.html',
-                              context={'boards_form': boards_form,
-                                       'boards_processor': boards_processor
-                                       })
-        elif req['language'] and req['form']:
-            boards_form = get_board_form(req, boards)
-            boards = boards_form.filter(programming_languages__id=req['language'])
-
-            print("['language'] and ['form']")
-            print(boards)
-            if boards:
-                # после сужения, платы есть
-                if len(boards) == 1:
-                    # вывод платы если она одна
-                    return render(self.request, 'boards/recommendations.html', context={'boards': boards})
-                elif len(boards) > 1:
-                    boards = get_distance_boards(boards, analog=req['analog'], digit=req['digit'],
-                                                 voltage=req['voltage'], price=req['price'])
-                    return render(self.request, 'boards/recommendations.html', context={'boards': boards})
-            else:
-                kl = Board.objects.all()
-                # после сужения плат нету, ищем лучшие результаты по категориям отдельно
-                boards_form = get_board_form(req, kl)
-                boards_language = kl.filter(programming_languages__id=req['language'])
-
-                boards_form = get_distance_boards(boards_form, analog=req['analog'], digit=req['digit'],
-                                                  voltage=req['voltage'], price=req['price'])
-                boards_language = get_distance_boards(boards_language, analog=req['analog'],
-                                                      digit=req['digit'], voltage=req['voltage'], price=req['price'])
-                return render(self.request, 'boards/recommendations.html',
-                              context={'boards_form': boards_form,
-                                       'boards_language': boards_language
-                                       })
-
-        elif req['processor_family']:
-            boards = boards.filter(processor__family_id=req['processor_family'])
-
-            print("['processor_family']")
-            print(boards)
-            if boards:
-                # после сужения, платы есть
-                if len(boards) == 1:
-                    # вывод платы если она одна
-                    return render(self.request, 'boards/recommendations.html', context={'boards': boards})
-                elif len(boards) > 1:
-                    boards = get_distance_boards(boards, analog=req['analog'], digit=req['digit'],
-                                                 voltage=req['voltage'], price=req['price'])
-                    return render(self.request, 'boards/recommendations.html', context={'boards': boards})
-            else:
-                # после сужения плат нету, ищем лучшие результаты по категориям отдельно
-                kl = Board.objects.all()
-                boards_processor = kl.filter(processor__family_id=req['processor_family'])
-
-                boards_processor = get_distance_boards(boards_processor, analog=req['analog'],
-                                                       digit=req['digit'], voltage=req['voltage'], price=req['price'])
-                return render(self.request, 'boards/recommendations.html',
-                              context={'boards_processor': boards_processor})
-        elif req['language']:
-            boards = boards.filter(programming_languages__id=req['language'])
-
-            print("['language']")
-            print(boards)
-            if boards:
-                # после сужения, платы есть
-                if len(boards) == 1:
-                    # вывод платы если она одна
-                    return render(self.request, 'boards/recommendations.html', context={'boards': boards})
-                elif len(boards) > 1:
-                    boards = get_distance_boards(boards, analog=req['analog'], digit=req['digit'],
-                                                 voltage=req['voltage'], price=req['price'])
-                    return render(self.request, 'boards/recommendations.html', context={'boards': boards})
-            else:
-                kl = Board.objects.all()
-                # после сужения плат нету, ищем лучшие результаты по категориям отдельно
-                boards_language = kl.filter(programming_languages__id=req['language'])
-                boards_language = get_distance_boards(boards_language, analog=req['analog'],
-                                                      digit=req['digit'], voltage=req['voltage'], price=req['price'])
-                return render(self.request, 'boards/recommendations.html',
-                              context={'boards_language': boards_language})
-        elif req['form']:
-            boards = get_board_form(req, boards)
-            print("['form']")
-            print(boards)
-            if boards:
-                # после сужения, платы есть
-                if len(boards) == 1:
-                    # вывод платы если она одна
-                    return render(self.request, 'boards/recommendations.html', context={'boards': boards})
-                elif len(boards) > 1:
-                    boards = get_distance_boards(boards, analog=req['analog'], digit=req['digit'],
-                                                 voltage=req['voltage'], price=req['price'])
-                    return render(self.request, 'boards/recommendations.html', context={'boards': boards})
-            else:
-                kl = Board.objects.all()
-                # после сужения плат нету, ищем лучшие результаты по категориям отдельно
-                boards_form = get_board_form(req, kl)
-
-                boards_form = get_distance_boards(boards_form, analog=req['analog'], digit=req['digit'],
-                                                  voltage=req['voltage'], price=req['price'])
-                return render(self.request, 'boards/recommendations.html',
-                              context={'boards_form': boards_form})
-        else:
-            # Если пользователь невводил ни каких жестких параметров
-            # То мы получаем все платы по уровню знаний
-            boards = get_distance_boards(kl, analog=req['analog'], digit=req['digit'],
-                                         voltage=req['voltage'], price=req['price'])
-            return render(self.request, 'boards/recommendations.html', context={'boards': boards})
+        all_boards = Board.objects.all()
+        return get_board(req, all_boards, self.request)
+        # know_level = 2
+        # if req['knowledge_level'] == 'professional':
+        #     # boards = платы по уровню знаний
+        #     boards = Board.objects.annotate(knowledge_level=F('community_openness') + F('entry_threshold')) \
+        #         .filter(knowledge_level__lte=know_level)
+        # else:
+        #     # boards = платы по уровню знаний
+        #     boards = Board.objects.annotate(knowledge_level=F('community_openness')+F('entry_threshold')) \
+        #         .filter(knowledge_level__gt=know_level)
+        # kl = boards
+        #
+        # if req['processor_family'] and req['language'] and req['form']:
+        #     boards_form = get_board_form(req, boards)
+        #     boards = boards_form.filter(processor__family_id=req['processor_family'],
+        #                                 programming_languages__id=req['language'])
+        #     print("['processor_family'] and ['language'] and ['form']")
+        #     print(boards)
+        #
+        #     if boards:
+        #         # после сужения, платы есть
+        #         if len(boards) == 1:
+        #             # вывод платы если она одна
+        #             return render(self.request, 'boards/recommendations.html', context={'boards': boards})
+        #         elif len(boards) > 1:
+        #             boards = get_distance_boards(boards, analog=req['analog'], digit=req['digit'],
+        #                                          voltage=req['voltage'], price=req['price'])
+        #             return render(self.request, 'boards/recommendations.html', context={'boards': boards})
+        #     else:
+        #         kl = Board.objects.all()
+        #         # после сужения плат нету, ищем лучшие результаты по категориям отдельно
+        #         boards_form = get_board_form(req, kl)
+        #         boards_processor = kl.filter(processor__family_id=req['processor_family'])
+        #         boards_language = kl.filter(programming_languages__id=req['language'])
+        #
+        #         boards_form = get_distance_boards(boards_form, analog=req['analog'], digit=req['digit'],
+        #                                           voltage=req['voltage'], price=req['price'])
+        #         boards_processor = get_distance_boards(boards_processor, analog=req['analog'],
+        #                                                digit=req['digit'], voltage=req['voltage'], price=req['price'])
+        #         boards_language = get_distance_boards(boards_language, analog=req['analog'],
+        #                                               digit=req['digit'], voltage=req['voltage'], price=req['price'])
+        #         return render(self.request, 'boards/recommendations.html',
+        #                       context={'boards_form': boards_form,
+        #                                'boards_processor': boards_processor,
+        #                                'boards_language': boards_language
+        #                                })
+        #
+        # elif req['processor_family'] and req['language']:
+        #     boards = boards.filter(processor__family_id=req['processor_family'],
+        #                            programming_languages__id=req['language'])
+        #
+        #     print("['processor_family'] and ['language']")
+        #     print(boards)
+        #
+        #     if boards:
+        #         # после сужения, платы есть
+        #         if len(boards) == 1:
+        #             # вывод платы если она одна
+        #             return render(self.request, 'boards/recommendations.html', context={'boards': boards})
+        #         elif len(boards) > 1:
+        #             boards = get_distance_boards(boards, analog=req['analog'], digit=req['digit'],
+        #                                          voltage=req['voltage'], price=req['price'])
+        #             return render(self.request, 'boards/recommendations.html', context={'boards': boards})
+        #     else:
+        #         kl = Board.objects.all()
+        #         # после сужения плат нету, ищем лучшие результаты по категориям отдельно
+        #         boards_processor = kl.filter(processor__family_id=req['processor_family'])
+        #         boards_language = kl.filter(programming_languages__id=req['language'])
+        #
+        #         boards_processor = get_distance_boards(boards_processor, analog=req['analog'],
+        #                                                digit=req['digit'], voltage=req['voltage'], price=req['price'])
+        #         boards_language = get_distance_boards(boards_language, analog=req['analog'],
+        #                                               digit=req['digit'], voltage=req['voltage'], price=req['price'])
+        #         return render(self.request, 'boards/recommendations.html',
+        #                       context={'boards_processor': boards_processor,
+        #                                'boards_language': boards_language
+        #                                })
+        # elif req['processor_family'] and req['form']:
+        #     boards_form = get_board_form(req, boards)
+        #     boards = boards_form.filter(processor__family_id=req['processor_family'])
+        #
+        #     print("['processor_family'] and ['form']")
+        #     print(boards)
+        #
+        #     if boards:
+        #         # после сужения, платы есть
+        #         if len(boards) == 1:
+        #             # вывод платы если она одна
+        #             return render(self.request, 'boards/recommendations.html', context={'boards': boards})
+        #         elif len(boards) > 1:
+        #             boards = get_distance_boards(boards, analog=req['analog'], digit=req['digit'],
+        #                                          voltage=req['voltage'], price=req['price'])
+        #             return render(self.request, 'boards/recommendations.html', context={'boards': boards})
+        #     else:
+        #         kl = Board.objects.all()
+        #         # после сужения плат нету, ищем лучшие результаты по категориям отдельно
+        #         boards_form = get_board_form(req, kl)
+        #         boards_processor = kl.filter(processor__family_id=req['processor_family'])
+        #
+        #         boards_form = get_distance_boards(boards_form, analog=req['analog'], digit=req['digit'],
+        #                                           voltage=req['voltage'], price=req['price'])
+        #         boards_processor = get_distance_boards(boards_processor, analog=req['analog'],
+        #                                                digit=req['digit'], voltage=req['voltage'], price=req['price'])
+        #         return render(self.request, 'boards/recommendations.html',
+        #                       context={'boards_form': boards_form,
+        #                                'boards_processor': boards_processor
+        #                                })
+        # elif req['language'] and req['form']:
+        #     boards_form = get_board_form(req, boards)
+        #     boards = boards_form.filter(programming_languages__id=req['language'])
+        #
+        #     print("['language'] and ['form']")
+        #     print(boards)
+        #     if boards:
+        #         # после сужения, платы есть
+        #         if len(boards) == 1:
+        #             # вывод платы если она одна
+        #             return render(self.request, 'boards/recommendations.html', context={'boards': boards})
+        #         elif len(boards) > 1:
+        #             boards = get_distance_boards(boards, analog=req['analog'], digit=req['digit'],
+        #                                          voltage=req['voltage'], price=req['price'])
+        #             return render(self.request, 'boards/recommendations.html', context={'boards': boards})
+        #     else:
+        #         kl = Board.objects.all()
+        #         # после сужения плат нету, ищем лучшие результаты по категориям отдельно
+        #         boards_form = get_board_form(req, kl)
+        #         boards_language = kl.filter(programming_languages__id=req['language'])
+        #
+        #         boards_form = get_distance_boards(boards_form, analog=req['analog'], digit=req['digit'],
+        #                                           voltage=req['voltage'], price=req['price'])
+        #         boards_language = get_distance_boards(boards_language, analog=req['analog'],
+        #                                               digit=req['digit'], voltage=req['voltage'], price=req['price'])
+        #         return render(self.request, 'boards/recommendations.html',
+        #                       context={'boards_form': boards_form,
+        #                                'boards_language': boards_language
+        #                                })
+        #
+        # elif req['processor_family']:
+        #     boards = boards.filter(processor__family_id=req['processor_family'])
+        #
+        #     print("['processor_family']")
+        #     print(boards)
+        #     if boards:
+        #         # после сужения, платы есть
+        #         if len(boards) == 1:
+        #             # вывод платы если она одна
+        #             return render(self.request, 'boards/recommendations.html', context={'boards': boards})
+        #         elif len(boards) > 1:
+        #             boards = get_distance_boards(boards, analog=req['analog'], digit=req['digit'],
+        #                                          voltage=req['voltage'], price=req['price'])
+        #             return render(self.request, 'boards/recommendations.html', context={'boards': boards})
+        #     else:
+        #         # после сужения плат нету, ищем лучшие результаты по категориям отдельно
+        #         kl = Board.objects.all()
+        #         boards_processor = kl.filter(processor__family_id=req['processor_family'])
+        #
+        #         boards_processor = get_distance_boards(boards_processor, analog=req['analog'],
+        #                                                digit=req['digit'], voltage=req['voltage'], price=req['price'])
+        #         return render(self.request, 'boards/recommendations.html',
+        #                       context={'boards_processor': boards_processor})
+        # elif req['language']:
+        #     boards = boards.filter(programming_languages__id=req['language'])
+        #
+        #     print("['language']")
+        #     print(boards)
+        #     if boards:
+        #         # после сужения, платы есть
+        #         if len(boards) == 1:
+        #             # вывод платы если она одна
+        #             return render(self.request, 'boards/recommendations.html', context={'boards': boards})
+        #         elif len(boards) > 1:
+        #             boards = get_distance_boards(boards, analog=req['analog'], digit=req['digit'],
+        #                                          voltage=req['voltage'], price=req['price'])
+        #             return render(self.request, 'boards/recommendations.html', context={'boards': boards})
+        #     else:
+        #         kl = Board.objects.all()
+        #         # после сужения плат нету, ищем лучшие результаты по категориям отдельно
+        #         boards_language = kl.filter(programming_languages__id=req['language'])
+        #         boards_language = get_distance_boards(boards_language, analog=req['analog'],
+        #                                               digit=req['digit'], voltage=req['voltage'], price=req['price'])
+        #         return render(self.request, 'boards/recommendations.html',
+        #                       context={'boards_language': boards_language})
+        # elif req['form']:
+        #     boards = get_board_form(req, boards)
+        #     print("['form']")
+        #     print(boards)
+        #     if boards:
+        #         # после сужения, платы есть
+        #         if len(boards) == 1:
+        #             # вывод платы если она одна
+        #             return render(self.request, 'boards/recommendations.html', context={'boards': boards})
+        #         elif len(boards) > 1:
+        #             boards = get_distance_boards(boards, analog=req['analog'], digit=req['digit'],
+        #                                          voltage=req['voltage'], price=req['price'])
+        #             return render(self.request, 'boards/recommendations.html', context={'boards': boards})
+        #     else:
+        #         kl = Board.objects.all()
+        #         # после сужения плат нету, ищем лучшие результаты по категориям отдельно
+        #         boards_form = get_board_form(req, kl)
+        #
+        #         boards_form = get_distance_boards(boards_form, analog=req['analog'], digit=req['digit'],
+        #                                           voltage=req['voltage'], price=req['price'])
+        #         return render(self.request, 'boards/recommendations.html',
+        #                       context={'boards_form': boards_form})
+        # else:
+        #     # Если пользователь невводил ни каких жестких параметров
+        #     # То мы получаем все платы по уровню знаний
+        #     boards = get_distance_boards(kl, analog=req['analog'], digit=req['digit'],
+        #                                  voltage=req['voltage'], price=req['price'])
+        #     return render(self.request, 'boards/recommendations.html', context={'boards': boards})
 
 
 class BoardListByCategory(FormMixin, DetailView):
@@ -391,7 +605,11 @@ class BoardListByCategory(FormMixin, DetailView):
             return self.form_invalid(form)
 
     def form_valid(self, form):
-        pass
+        print(self.request.POST)
+        category = self.get_object()
+        category_boards = Board.objects.filter(category=category)
+        req = self.request.POST
+        return get_board(req, category_boards, self.request)
 
 
 class BoardDetail(DetailView):
