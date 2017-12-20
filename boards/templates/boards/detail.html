@@ -2,12 +2,12 @@
 {% load i18n %}
 {% block title %}{{ board.title }}{% endblock %}
 {% block content %}
+    <div class="table">
     <h1>{{ board.name }}</h1>
     <div class="detail">
         <div class="detail-img">
             <img src="{{ board.image.url }}" alt="" style="width: 40rem">
         </div>
-
         <div class="detail-info">
             <p><b>{% trans "Processor Family" %}:</b> {{ board.processor.family }}</p>
             <p><b>{% trans "Processor" %}:</b> {{ board.processor.name }}</p>
@@ -20,6 +20,16 @@
                 <p><b>{% trans "Analog" %}:</b> {{ board.analog_port }}</p>
                 <p><b>{% trans "Digital" %}:</b> {{ board.digital_port }}</p>
                 <p><b>{% trans "Voltage" %}:</b> {{ board.power }}</p>
+                <p><b>{% trans "Language" %}:</b>
+                {% for l in board.programming_languages.all %}
+                    {% if forloop.last %}
+                        {{ l }}.
+                    {% else %}
+                       {{ l }},
+                    {% endif %}
+                {% endfor %}
+                </p>
         </div>
+    </div>
     </div>
 {% endblock %}

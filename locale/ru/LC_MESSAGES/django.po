@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-12-13 19:48+0200\n"
+"POT-Creation-Date: 2017-12-20 18:03+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -27,6 +27,10 @@ msgstr "Русский"
 #: arduino_django/settings.py:117
 msgid "English"
 msgstr "Английский"
+
+#: arduino_django/settings.py:118
+msgid "Ukrainian"
+msgstr "Украинский"
 
 #: boards/forms.py:8
 msgid "Beginner"
@@ -53,6 +57,7 @@ msgid "Processor Family"
 msgstr "Семейство процессоров"
 
 #: boards/templates/boards/detail.html:13
+#: boards/templates/boards/recommendations.html:58
 msgid "Processor"
 msgstr "Процессор"
 
@@ -77,7 +82,14 @@ msgstr "Цифровых входов/выходов"
 msgid "Voltage"
 msgstr "Питание"
 
+#: boards/templates/boards/detail.html:23
+#: boards/templates/boards/recommendations.html:71
+#: boards/templates/filter.html:50
+msgid "Language"
+msgstr "Язык"
+
 #: boards/templates/boards/list.html:3 boards/templates/boards/list.html:28
+#: boards/templates/boards/recommendations.html:3
 msgid "Boards"
 msgstr "Платы"
 
@@ -90,8 +102,58 @@ msgid "All"
 msgstr "Все"
 
 #: boards/templates/boards/list.html:36
+#: boards/templates/boards/recommendations.html:29
+#: boards/templates/boards/recommendations.html:51
+#: boards/templates/boards/recommendations.html:64
+#: boards/templates/boards/recommendations.html:77
 msgid "Detail"
 msgstr "Подробно"
+
+#: boards/templates/boards/recommendations.html:8
+msgid "Recommendations"
+msgstr "Рекомендации"
+
+#: boards/templates/boards/recommendations.html:13
+msgid "The board that meets your requirements was found."
+msgstr "Соответствующая вашим требованиям плата найдена."
+
+#: boards/templates/boards/recommendations.html:14
+#: boards/templates/boards/recommendations.html:19
+#: boards/templates/boards/recommendations.html:38
+#: boards/templates/boards/recommendations.html:86
+msgid "Return to search"
+msgstr "Вернуться к поиску"
+
+#: boards/templates/boards/recommendations.html:18
+msgid ""
+"The board that meets your requirements was found: it displayed first. But we "
+"also advise you to look at the following boards that meet your criteria."
+msgstr ""
+"Соответствующая вашим требованиям плата найдена: она отображена первой."
+"Но мы также советуем вам взглянуть на следующие платы, соответствующие отдельным вашим критериям."
+
+#: boards/templates/boards/recommendations.html:37
+msgid ""
+"The board that meets your requirements was not found, but we suggest that "
+"you look at the following cards that meet your criteria."
+msgstr ""
+"Соответствующая вашим требованиям плата не найдена, но мы предлагаем"
+"вам взглянуть на следующие платы, соответствующие отдельным вашим критериям."
+
+#: boards/templates/boards/recommendations.html:45
+#: boards/templates/filter.html:64
+msgid "Form"
+msgstr "Размер"
+
+#: boards/templates/boards/recommendations.html:85
+msgid ""
+"The board that meets your requirements was not found. Try changing the "
+"requirements by the following criteria: programming language, family of "
+"processors, form factor."
+msgstr ""
+"Соответствующая вашим требованиям плата не найдена. Попробуйте изменить "
+"требования по следующим критериям: язык программирования, семейство "
+"процессоров, форм-фактор."
 
 #: boards/templates/filter.html:4
 msgid "Requirements"
@@ -121,17 +183,9 @@ msgstr "Цифровые входы/выходы"
 msgid "Feature Software"
 msgstr "Функц. Программные"
 
-#: boards/templates/filter.html:50
-msgid "Language"
-msgstr "Язык программирования"
-
 #: boards/templates/filter.html:55
 msgid "Supplementary"
 msgstr "Нефункциональные"
-
-#: boards/templates/filter.html:64
-msgid "Form"
-msgstr "Размеры"
 
 #: boards/templates/filter.html:68
 msgid "Send"
@@ -152,6 +206,3 @@ msgstr "из"
 #: boards/templates/pagination.html:13
 msgid "Next"
 msgstr "Следующая"
-
-#~ msgid "Ukrainian"
-#~ msgstr "Украинский"

@@ -1,8 +1,35 @@
 {% extends "base.html" %}
 {% load i18n %}
+{% load staticfiles %}
 {% block title %}{% trans "Boards" %}{% endblock %}
-
-
+{% block header %}
+    <ul class="menu">
+            <li>
+                <form id='lang_en' action='{% url 'set_language' %}' method='POST'>{% csrf_token %}
+                    <input type='hidden' name='language' value='en'/>
+                    <a href='#' title='English' onclick="document.getElementById('lang_en').submit()">
+                        <img src="{% static 'img/flag/en.png' %}" style="width: 40px; height: 25px"/>
+                    </a>
+                </form>
+            </li>
+            <li>
+                <form id='lang_ru' action='{% url 'set_language' %}' method='POST'>{% csrf_token %}
+                    <input type='hidden' name='language' value='ru'/>
+                    <a href='#' title='Russian' onclick="document.getElementById('lang_ru').submit()">
+                        <img src="{% static 'img/flag/ru.png' %}" style="width: 40px; height: 25px"/>
+                    </a>
+                </form>
+            </li>
+            <li>
+                <form id='lang_uk' action='{% url 'set_language' %}' method='POST'>{% csrf_token %}
+                    <input type='hidden' name='language' value='uk'/>
+                    <a href='#' title='Ukrainian' onclick="document.getElementById('lang_uk').submit()">
+                        <img src="{% static 'img/flag/uk.png' %}" style="width: 40px; height: 25px"/>
+                    </a>
+                </form>
+            </li>
+        </ul>
+{% endblock %}
 {% block content %}
 <div class="table">
 

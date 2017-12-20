@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-12-13 19:49+0200\n"
+"POT-Creation-Date: 2017-12-20 18:03+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -56,6 +56,7 @@ msgid "Processor Family"
 msgstr "Сімейство процесорів"
 
 #: boards/templates/boards/detail.html:13
+#: boards/templates/boards/recommendations.html:58
 msgid "Processor"
 msgstr "Процесор"
 
@@ -80,7 +81,14 @@ msgstr "Цифрових входів/виходів"
 msgid "Voltage"
 msgstr "Живлення"
 
+#: boards/templates/boards/detail.html:23
+#: boards/templates/boards/recommendations.html:71
+#: boards/templates/filter.html:50
+msgid "Language"
+msgstr "Мова"
+
 #: boards/templates/boards/list.html:3 boards/templates/boards/list.html:28
+#: boards/templates/boards/recommendations.html:3
 msgid "Boards"
 msgstr "Плати"
 
@@ -93,8 +101,58 @@ msgid "All"
 msgstr "Всі"
 
 #: boards/templates/boards/list.html:36
+#: boards/templates/boards/recommendations.html:29
+#: boards/templates/boards/recommendations.html:51
+#: boards/templates/boards/recommendations.html:64
+#: boards/templates/boards/recommendations.html:77
 msgid "Detail"
 msgstr "Детально"
+
+#: boards/templates/boards/recommendations.html:8
+msgid "Recommendations"
+msgstr "Рекомендації"
+
+#: boards/templates/boards/recommendations.html:13
+msgid "The board that meets your requirements was found."
+msgstr "Відповідна вашим вимогам плата знайдена."
+
+#: boards/templates/boards/recommendations.html:14
+#: boards/templates/boards/recommendations.html:19
+#: boards/templates/boards/recommendations.html:38
+#: boards/templates/boards/recommendations.html:86
+msgid "Return to search"
+msgstr "Повернутися до пошуку"
+
+#: boards/templates/boards/recommendations.html:18
+msgid ""
+"The board that meets your requirements was found: it displayed first. But we "
+"also advise you to look at the following boards that meet your criteria."
+msgstr ""
+"Відповідна вашим вимогам плата знайдена: вона вiдображена першою. Але ми "
+"також радимо вам поглянути на такі плати, відповідні окремим вашим критеріям."
+
+#: boards/templates/boards/recommendations.html:37
+msgid ""
+"The board that meets your requirements was not found, but we suggest that "
+"you look at the following cards that meet your criteria."
+msgstr ""
+"Відповідна вашим вимогам плата не знайдена, але ми пропонуємо "
+"вам поглянути на такі плати, відповідні окремим вашим критеріям."
+
+#: boards/templates/boards/recommendations.html:45
+#: boards/templates/filter.html:64
+msgid "Form"
+msgstr "Розмір"
+
+#: boards/templates/boards/recommendations.html:85
+msgid ""
+"The board that meets your requirements was not found. Try changing the "
+"requirements by the following criteria: programming language, family of "
+"processors, form factor."
+msgstr ""
+"Відповідну вашим вимогам плата не знайдено. Спробуйте змінити"
+"вимоги за наступними критеріями: мова програмування, сімейство"
+"процесорів, форм-фактор."
 
 #: boards/templates/filter.html:4
 msgid "Requirements"
@@ -124,17 +182,9 @@ msgstr "Цифрові входи/виходи"
 msgid "Feature Software"
 msgstr "Функц. Програмні"
 
-#: boards/templates/filter.html:50
-msgid "Language"
-msgstr "Мова програмування"
-
 #: boards/templates/filter.html:55
 msgid "Supplementary"
 msgstr "Нефункціональні"
-
-#: boards/templates/filter.html:64
-msgid "Form"
-msgstr "Розміри"
 
 #: boards/templates/filter.html:68
 msgid "Send"
