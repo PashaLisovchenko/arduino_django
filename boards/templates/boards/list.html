@@ -42,5 +42,7 @@
 </div>
     {% if page_obj %}
         {% include "pagination.html" with page=page_obj %}
+    {% else %}
+        {% include "pagination.html" with page=boards %}
     {% endif %}
 {% endblock %}

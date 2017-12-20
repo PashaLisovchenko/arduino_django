@@ -1,4 +1,5 @@
 from _decimal import Decimal
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.shortcuts import render
 from django.views.generic.edit import FormMixin
 from .models import Board, Category
@@ -21,7 +22,7 @@ def get_board_form(req, boards):
     return boards_form
 
 
-def get_distance_boards(request, boards, analog=None, digit=None, voltage=None, price=None):
+def get_distance_boards(boards, analog=None, digit=None, voltage=None, price=None):
     if analog and digit and voltage and price:
         boards = boards.annotate(expires=ExpressionWrapper(
             (int(analog) - F('analog_port')) * (int(analog) - F('analog_port')) +
@@ -153,7 +154,7 @@ class BoardList(FormMixin, ListView):
             # boards = платы по уровню знаний
             boards = Board.objects.annotate(knowledge_level=F('community_openness')+F('entry_threshold')) \
                 .filter(knowledge_level__gt=know_level)
-        # kl = boards
+        kl = boards
 
         if req['processor_family'] and req['language'] and req['form']:
             boards_form = get_board_form(req, boards)
@@ -168,7 +169,7 @@ class BoardList(FormMixin, ListView):
                     # вывод платы если она одна
                     return render(self.request, 'boards/recommendations.html', context={'boards': boards})
                 elif len(boards) > 1:
-                    boards = get_distance_boards(self.request, boards, analog=req['analog'], digit=req['digit'],
+                    boards = get_distance_boards(boards, analog=req['analog'], digit=req['digit'],
                                                  voltage=req['voltage'], price=req['price'])
                     return render(self.request, 'boards/recommendations.html', context={'boards': boards})
             else:
@@ -178,11 +179,11 @@ class BoardList(FormMixin, ListView):
                 boards_processor = kl.filter(processor__family_id=req['processor_family'])
                 boards_language = kl.filter(programming_languages__id=req['language'])
 
-                boards_form = get_distance_boards(self.request, boards_form, analog=req['analog'], digit=req['digit'],
+                boards_form = get_distance_boards(boards_form, analog=req['analog'], digit=req['digit'],
                                                   voltage=req['voltage'], price=req['price'])
-                boards_processor = get_distance_boards(self.request, boards_processor, analog=req['analog'],
+                boards_processor = get_distance_boards(boards_processor, analog=req['analog'],
                                                        digit=req['digit'], voltage=req['voltage'], price=req['price'])
-                boards_language = get_distance_boards(self.request, boards_language, analog=req['analog'],
+                boards_language = get_distance_boards(boards_language, analog=req['analog'],
                                                       digit=req['digit'], voltage=req['voltage'], price=req['price'])
                 return render(self.request, 'boards/recommendations.html',
                               context={'boards_form': boards_form,
@@ -203,7 +204,7 @@ class BoardList(FormMixin, ListView):
                     # вывод платы если она одна
                     return render(self.request, 'boards/recommendations.html', context={'boards': boards})
                 elif len(boards) > 1:
-                    boards = get_distance_boards(self.request, boards, analog=req['analog'], digit=req['digit'],
+                    boards = get_distance_boards(boards, analog=req['analog'], digit=req['digit'],
                                                  voltage=req['voltage'], price=req['price'])
                     return render(self.request, 'boards/recommendations.html', context={'boards': boards})
             else:
@@ -212,9 +213,9 @@ class BoardList(FormMixin, ListView):
                 boards_processor = kl.filter(processor__family_id=req['processor_family'])
                 boards_language = kl.filter(programming_languages__id=req['language'])
 
-                boards_processor = get_distance_boards(self.request, boards_processor, analog=req['analog'],
+                boards_processor = get_distance_boards(boards_processor, analog=req['analog'],
                                                        digit=req['digit'], voltage=req['voltage'], price=req['price'])
-                boards_language = get_distance_boards(self.request, boards_language, analog=req['analog'],
+                boards_language = get_distance_boards(boards_language, analog=req['analog'],
                                                       digit=req['digit'], voltage=req['voltage'], price=req['price'])
                 return render(self.request, 'boards/recommendations.html',
                               context={'boards_processor': boards_processor,
@@ -233,7 +234,7 @@ class BoardList(FormMixin, ListView):
                     # вывод платы если она одна
                     return render(self.request, 'boards/recommendations.html', context={'boards': boards})
                 elif len(boards) > 1:
-                    boards = get_distance_boards(self.request, boards, analog=req['analog'], digit=req['digit'],
+                    boards = get_distance_boards(boards, analog=req['analog'], digit=req['digit'],
                                                  voltage=req['voltage'], price=req['price'])
                     return render(self.request, 'boards/recommendations.html', context={'boards': boards})
             else:
@@ -242,9 +243,9 @@ class BoardList(FormMixin, ListView):
                 boards_form = get_board_form(req, kl)
                 boards_processor = kl.filter(processor__family_id=req['processor_family'])
 
-                boards_form = get_distance_boards(self.request, boards_form, analog=req['analog'], digit=req['digit'],
+                boards_form = get_distance_boards(boards_form, analog=req['analog'], digit=req['digit'],
                                                   voltage=req['voltage'], price=req['price'])
-                boards_processor = get_distance_boards(self.request, boards_processor, analog=req['analog'],
+                boards_processor = get_distance_boards(boards_processor, analog=req['analog'],
                                                        digit=req['digit'], voltage=req['voltage'], price=req['price'])
                 return render(self.request, 'boards/recommendations.html',
                               context={'boards_form': boards_form,
@@ -262,7 +263,7 @@ class BoardList(FormMixin, ListView):
                     # вывод платы если она одна
                     return render(self.request, 'boards/recommendations.html', context={'boards': boards})
                 elif len(boards) > 1:
-                    boards = get_distance_boards(self.request, boards, analog=req['analog'], digit=req['digit'],
+                    boards = get_distance_boards(boards, analog=req['analog'], digit=req['digit'],
                                                  voltage=req['voltage'], price=req['price'])
                     return render(self.request, 'boards/recommendations.html', context={'boards': boards})
             else:
@@ -271,9 +272,9 @@ class BoardList(FormMixin, ListView):
                 boards_form = get_board_form(req, kl)
                 boards_language = kl.filter(programming_languages__id=req['language'])
 
-                boards_form = get_distance_boards(self.request, boards_form, analog=req['analog'], digit=req['digit'],
+                boards_form = get_distance_boards(boards_form, analog=req['analog'], digit=req['digit'],
                                                   voltage=req['voltage'], price=req['price'])
-                boards_language = get_distance_boards(self.request, boards_language, analog=req['analog'],
+                boards_language = get_distance_boards(boards_language, analog=req['analog'],
                                                       digit=req['digit'], voltage=req['voltage'], price=req['price'])
                 return render(self.request, 'boards/recommendations.html',
                               context={'boards_form': boards_form,
@@ -291,7 +292,7 @@ class BoardList(FormMixin, ListView):
                     # вывод платы если она одна
                     return render(self.request, 'boards/recommendations.html', context={'boards': boards})
                 elif len(boards) > 1:
-                    boards = get_distance_boards(self.request, boards, analog=req['analog'], digit=req['digit'],
+                    boards = get_distance_boards(boards, analog=req['analog'], digit=req['digit'],
                                                  voltage=req['voltage'], price=req['price'])
                     return render(self.request, 'boards/recommendations.html', context={'boards': boards})
             else:
@@ -299,7 +300,7 @@ class BoardList(FormMixin, ListView):
                 kl = Board.objects.all()
                 boards_processor = kl.filter(processor__family_id=req['processor_family'])
 
-                boards_processor = get_distance_boards(self.request, boards_processor, analog=req['analog'],
+                boards_processor = get_distance_boards(boards_processor, analog=req['analog'],
                                                        digit=req['digit'], voltage=req['voltage'], price=req['price'])
                 return render(self.request, 'boards/recommendations.html',
                               context={'boards_processor': boards_processor})
@@ -314,14 +315,14 @@ class BoardList(FormMixin, ListView):
                     # вывод платы если она одна
                     return render(self.request, 'boards/recommendations.html', context={'boards': boards})
                 elif len(boards) > 1:
-                    boards = get_distance_boards(self.request, boards, analog=req['analog'], digit=req['digit'],
+                    boards = get_distance_boards(boards, analog=req['analog'], digit=req['digit'],
                                                  voltage=req['voltage'], price=req['price'])
                     return render(self.request, 'boards/recommendations.html', context={'boards': boards})
             else:
                 kl = Board.objects.all()
                 # после сужения плат нету, ищем лучшие результаты по категориям отдельно
                 boards_language = kl.filter(programming_languages__id=req['language'])
-                boards_language = get_distance_boards(self.request, boards_language, analog=req['analog'],
+                boards_language = get_distance_boards(boards_language, analog=req['analog'],
                                                       digit=req['digit'], voltage=req['voltage'], price=req['price'])
                 return render(self.request, 'boards/recommendations.html',
                               context={'boards_language': boards_language})
@@ -335,7 +336,7 @@ class BoardList(FormMixin, ListView):
                     # вывод платы если она одна
                     return render(self.request, 'boards/recommendations.html', context={'boards': boards})
                 elif len(boards) > 1:
-                    boards = get_distance_boards(self.request, boards, analog=req['analog'], digit=req['digit'],
+                    boards = get_distance_boards(boards, analog=req['analog'], digit=req['digit'],
                                                  voltage=req['voltage'], price=req['price'])
                     return render(self.request, 'boards/recommendations.html', context={'boards': boards})
             else:
@@ -343,33 +344,54 @@ class BoardList(FormMixin, ListView):
                 # после сужения плат нету, ищем лучшие результаты по категориям отдельно
                 boards_form = get_board_form(req, kl)
 
-                boards_form = get_distance_boards(self.request, boards_form, analog=req['analog'], digit=req['digit'],
+                boards_form = get_distance_boards(boards_form, analog=req['analog'], digit=req['digit'],
                                                   voltage=req['voltage'], price=req['price'])
                 return render(self.request, 'boards/recommendations.html',
                               context={'boards_form': boards_form})
         else:
             # Если пользователь невводил ни каких жестких параметров
             # То мы получаем все платы по уровню знаний
-            boards = get_distance_boards(self.request, kl, analog=req['analog'], digit=req['digit'],
+            boards = get_distance_boards(kl, analog=req['analog'], digit=req['digit'],
                                          voltage=req['voltage'], price=req['price'])
             return render(self.request, 'boards/recommendations.html', context={'boards': boards})
 
 
-class BoardListByCategory(DetailView):
+class BoardListByCategory(FormMixin, DetailView):
     template_name = 'boards/list.html'
     model = Category
+    form_class = RequirementsForm
     context_object_name = 'category'
     slug_url_kwarg = 'category_slug'
 
     def get_context_data(self, **kwargs):
         context = super(BoardListByCategory, self).get_context_data(**kwargs)
         categories = Category.objects.all()
-        form = RequirementsForm()
-        context['form'] = form
-        boards = Board.objects.filter(category=context['category'])
+        object_list = Board.objects.filter(category=context['category'])
+        paginator = Paginator(object_list, 9)  # 3 posts in each page
+        page = self.request.GET.get('page')
+        try:
+            boards = paginator.page(page)
+        except PageNotAnInteger:
+            # If page is not an integer deliver the first page
+            boards = paginator.page(1)
+        except EmptyPage:
+            # If page is out of range deliver last page of results
+            boards = paginator.page(paginator.num_pages)
+
+        context['page'] = page
         context['categories'] = categories
         context['boards'] = boards
         return context
+
+    def post(self, request, *args, **kwargs):
+        form = self.get_form()
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
+
+    def form_valid(self, form):
+        pass
 
 
 class BoardDetail(DetailView):
