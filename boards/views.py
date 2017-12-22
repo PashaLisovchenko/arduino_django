@@ -26,12 +26,13 @@ def get_board(req, object_list, request):
     know_level = 2
     if req['knowledge_level'] == 'professional':
         # boards = платы по уровню знаний
-        boards = object_list.annotate(knowledge_level=F('community_openness') + F('entry_threshold')) \
-            .filter(knowledge_level__lte=know_level)
+        # boards = object_list.annotate(knowledge_level=F('community_openness') + F('entry_threshold')) \
+        #     .filter(knowledge_level__lte=know_level)
+        boards = object_list.all()
     else:
         # boards = платы по уровню знаний
         boards = object_list.annotate(knowledge_level=F('community_openness')+F('entry_threshold')) \
-            .filter(knowledge_level__gt=know_level)
+            .filter(knowledge_level__lt=know_level)
     kl = boards
 
     if req['processor_family'] and req['language'] and req['form']:
