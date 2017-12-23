@@ -1,0 +1,6 @@
+Django==1.11
+django-easymode==0.14.5
+django-modeltranslation==0.12.1
+olefile==0.44
+Pillow==4.3.0
+pytz==2017.3
