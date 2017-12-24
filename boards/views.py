@@ -5,7 +5,7 @@ from django.views.generic.edit import FormMixin
 from .models import Board, Category
 from django.views.generic import ListView, DetailView
 from .forms import RequirementsForm
-from django.db.models import F, DecimalField, ExpressionWrapper
+from django.db.models import F, DecimalField, ExpressionWrapper, Value
 
 
 def get_board_form(req, boards):
@@ -273,100 +273,37 @@ def get_board(req, object_list, request, form_class, category, categories):
 
 
 def get_distance_boards(boards, analog=None, digit=None, voltage=None, price=None):
-    if analog and digit and voltage and price:
-        boards = boards.annotate(expires=ExpressionWrapper(
-            (int(analog) - F('analog_port')) * (int(analog) - F('analog_port')) +
-            (int(digit) - F('digital_port')) * (int(digit) - F('digital_port')) +
-            (Decimal(voltage) - F('power')) * (Decimal(voltage) - F('power')) +
-            (Decimal(price) - F('max_price')) * (Decimal(price) - F('max_price')),
-            output_field=DecimalField())).order_by('expires')
-        # print(boards[0].expires)
-        return boards[:4]
-    elif analog and digit and voltage:
-        boards = boards.annotate(expires=ExpressionWrapper(
-            (int(analog) - F('analog_port')) * (int(analog) - F('analog_port')) +
-            (int(digit) - F('digital_port')) * (int(digit) - F('digital_port')) +
-            (Decimal(voltage) - F('power')) * (Decimal(voltage) - F('power')),
-            output_field=DecimalField())).order_by('expires')
-        return boards[:4]
-    elif analog and digit and price:
-        boards = boards.annotate(expires=ExpressionWrapper(
-            (int(analog) - F('analog_port')) * (int(analog) - F('analog_port')) +
-            (int(digit) - F('digital_port')) * (int(digit) - F('digital_port')) +
-            (Decimal(price) - F('max_price')) * (Decimal(price) - F('max_price')),
-            output_field=DecimalField())).order_by('expires')
-        return boards[:4]
-    elif analog and voltage and price:
-        boards = boards.annotate(expires=ExpressionWrapper(
-            (int(analog) - F('analog_port')) * (int(analog) - F('analog_port')) +
-            (Decimal(voltage) - F('power')) * (Decimal(voltage) - F('power')) +
-            (Decimal(price) - F('max_price')) * (Decimal(price) - F('max_price')),
-            output_field=DecimalField())).order_by('expires')
-        return boards[:4]
-    elif digit and voltage and price:
-        boards = boards.annotate(expires=ExpressionWrapper(
-            (int(digit) - F('digital_port')) * (int(digit) - F('digital_port')) +
-            (Decimal(voltage) - F('power')) * (Decimal(voltage) - F('power')) +
-            (Decimal(price) - F('max_price')) * (Decimal(price) - F('max_price')),
-            output_field=DecimalField())).order_by('expires')
-        return boards[:4]
-    elif analog and digit:
-        boards = boards.annotate(expires=ExpressionWrapper(
-            (int(analog) - F('analog_port')) * (int(analog) - F('analog_port')) +
-            (int(digit) - F('digital_port')) * (int(digit) - F('digital_port')),
-            output_field=DecimalField())).order_by('expires')
-        return boards[:4]
-    elif analog and voltage:
-        boards = boards.annotate(expires=ExpressionWrapper(
-            (int(analog) - F('analog_port')) * (int(analog) - F('analog_port')) +
-            (Decimal(voltage) - F('power')) * (Decimal(voltage) - F('power')),
-            output_field=DecimalField())).order_by('expires')
-        return boards[:4]
-    elif analog and price:
-        boards = boards.annotate(expires=ExpressionWrapper(
-            (int(analog) - F('analog_port')) * (int(analog) - F('analog_port')) +
-            (Decimal(price) - F('max_price')) * (Decimal(price) - F('max_price')),
-            output_field=DecimalField())).order_by('expires')
-        return boards[:4]
-    elif digit and voltage:
-        boards = boards.annotate(expires=ExpressionWrapper(
-            (int(digit) - F('digital_port')) * (int(digit) - F('digital_port')) +
-            (Decimal(voltage) - F('power')) * (Decimal(voltage) - F('power')),
-            output_field=DecimalField())).order_by('expires')
-        return boards[:4]
-    elif digit and price:
-        boards = boards.annotate(expires=ExpressionWrapper(
-            (int(digit) - F('digital_port')) * (int(digit) - F('digital_port')) +
-            (Decimal(price) - F('max_price')) * (Decimal(price) - F('max_price')),
-            output_field=DecimalField())).order_by('expires')
-        return boards[:4]
-    elif voltage and price:
-        boards = boards.annotate(expires=ExpressionWrapper(
-            (Decimal(voltage) - F('power')) * (Decimal(voltage) - F('power')) +
-            (Decimal(price) - F('max_price')) * (Decimal(price) - F('max_price')),
-            output_field=DecimalField())).order_by('expires')
-        return boards[:4]
-    elif analog:
-        boards = boards.annotate(expires=ExpressionWrapper(
-            (int(analog) - F('analog_port')) * (int(analog) - F('analog_port')),
-            output_field=DecimalField())).order_by('expires')
-        return boards[:4]
-    elif digit:
-        boards = boards.annotate(expires=ExpressionWrapper(
-            (int(digit) - F('digital_port')) * (int(digit) - F('digital_port')),
-            output_field=DecimalField())).order_by('expires')
-        return boards[:4]
-    elif voltage:
-        boards = boards.annotate(expires=ExpressionWrapper(
-            (Decimal(voltage) - F('power')) * (Decimal(voltage) - F('power')),
-            output_field=DecimalField())).order_by('expires')
-        return boards[:4]
-    elif price:
-        boards = boards.annotate(expires=ExpressionWrapper(
-            (Decimal(price) - F('max_price')) * (Decimal(price) - F('max_price')),
-            output_field=DecimalField())).order_by('expires')
+    if not analog and not digit and not voltage and not price:
         return boards[:4]
     else:
+        if analog:
+            boards = boards.annotate(d_analog=ExpressionWrapper(
+                    (int(analog) - F('analog_port')) * (int(analog) - F('analog_port')),
+                    output_field=DecimalField()))
+        else:
+            boards = boards.annotate(d_analog=ExpressionWrapper(Value(0), output_field=DecimalField()))
+        if digit:
+            boards = boards.annotate(d_digit=ExpressionWrapper(
+                (int(digit) - F('digital_port')) * (int(digit) - F('digital_port')),
+                output_field=DecimalField()))
+        else:
+            boards = boards.annotate(d_digit=ExpressionWrapper(Value(0), output_field=DecimalField()))
+        if voltage:
+            boards = boards.annotate(d_voltage=ExpressionWrapper(
+                (Decimal(voltage) - F('power')) * (Decimal(voltage) - F('power')),
+                output_field=DecimalField()))
+        else:
+            boards = boards.annotate(d_voltage=ExpressionWrapper(Value(0), output_field=DecimalField()))
+        if price:
+            boards = boards.annotate(d_price=ExpressionWrapper(
+                (Decimal(price) - F('max_price')) * (Decimal(price) - F('max_price')),
+                output_field=DecimalField()))
+        else:
+            boards = boards.annotate(d_price=ExpressionWrapper(Value(0), output_field=DecimalField()))
+
+        boards = boards.annotate(expires=ExpressionWrapper(
+            F('d_analog') + F('d_digit') + F('d_voltage') + F('d_price'),
+            output_field=DecimalField())).order_by('expires')
         return boards[:4]
 
 
