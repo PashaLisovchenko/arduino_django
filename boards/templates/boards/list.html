@@ -3,6 +3,7 @@
 {% load staticfiles %}
 {% block title %}{% trans "Boards" %}{% endblock %}
 {% block header %}
+    {% if not rec %}
     <ul class="menu">
             <li>
                 <form id='lang_en' action='{% url 'set_language' %}' method='POST'>{% csrf_token %}
@@ -29,6 +30,7 @@
                 </form>
             </li>
         </ul>
+     {% endif %}
 {% endblock %}
 {% block content %}
     <div class="table">
