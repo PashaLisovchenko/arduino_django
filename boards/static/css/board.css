@@ -169,8 +169,8 @@ input[type=submit] {
 }
 .board-tag img{
     margin-bottom: 1rem;
-    /*width: 10rem;*/
-    /*height: 10rem;*/
+    width: 12rem;
+    height: 12rem;
 }
 .board-tag:hover{
     cursor: pointer;
