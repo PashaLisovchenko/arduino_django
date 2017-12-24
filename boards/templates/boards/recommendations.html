@@ -1,40 +1,64 @@
-{% extends "base.html" %}
 {% load i18n %}
-{% block title %}{% trans "Boards" %}{% endblock %}
-
-{% block content %}
-<div class="table">
-    <h1 class="h_recomm">{% trans "Recommendations" %}</h1>
+    <h1>{% trans "Recommendations" %}</h1>
 
     {% if boards %}
         {% if boards.count == 1 %}
             <div class="info_recomm-good">
                 <p>{% trans "The board that meets your requirements was found." %}</p>
-                <a class="btn-recomm-good" href="{% url "boards:board_list" %}">{% trans "Return to search" %}</a>
+{#                <a class="btn-recomm-good" href="{% url "boards:board_list" %}">{% trans "Return to search" %}</a>#}
             </div>
         {% else %}
             <div class="info_recomm-good">
                 <p>{% trans "The board that meets your requirements was found: it displayed first. But we also advise you to look at the following boards that meet your criteria." %}</p>
-                <a class="btn-recomm-good" href="{% url "boards:board_list" %}">{% trans "Return to search" %}</a>
+{#                <a class="btn-recomm-good" href="{% url "boards:board_list" %}">{% trans "Return to search" %}</a>#}
             </div>
         {% endif %}
         <div class="board-tags">
             {% for board in boards %}
-                <div class="board-tag">
-                    <img src="{{ board.image.url }}" alt="">
-                    <span>{{ board.name }}</span>
-                    <h4>{{ board.processor }}</h4>
-                    <a href="{{ board.get_absolute_url }}">
-                        <button class="board-btn">{% trans 'Detail' %}</button>
-                    </a>
-                </div>
+                {% if forloop.first %}
+                    <div class="board-tag-main">
+                        <a href="{{ board.get_absolute_url }}"><img src="{{ board.image.url }}" alt=""></a>
+                        <div class="main-info">
+                            <h1>{{ board.name }}</h1>
+                            <p><b>{% trans "Processor Family" %}:</b> {{ board.processor.family }}</p>
+                            <p><b>{% trans "Processor" %}:</b> {{ board.processor.name }}</p>
+                                {% if board.min_price == board.max_price %}
+                                    <p><b>{% trans "Price" %}:</b> {{ board.min_price }}</p>
+                                {% else %}
+                                    <p><b>{% trans "Price" %}:</b> {{ board.min_price }} - {{ board.max_price }}</p>
+                                {% endif %}
+                                <p><b>{% trans "Form-Factor" %}:</b> {{ board.length }} x {{ board.width }}</p>
+                                <p><b>{% trans "Analog" %}:</b> {{ board.analog_port }}</p>
+                                <p><b>{% trans "Digital" %}:</b> {{ board.digital_port }}</p>
+                                <p><b>{% trans "Voltage" %}:</b> {{ board.power }}</p>
+                                <p><b>{% trans "Language" %}:</b>
+                                {% for l in board.programming_languages.all %}
+                                    {% if forloop.last %}
+                                        {{ l }}.
+                                    {% else %}
+                                       {{ l }},
+                                    {% endif %}
+                                {% endfor %}
+                                </p>
+                        </div>
+                    </div>
+                    {% else %}
+                    <div class="board-tag">
+                        <img src="{{ board.image.url }}" alt="">
+                        <span>{{ board.name }}</span>
+                        <h4>{{ board.processor }}</h4>
+                        <a href="{{ board.get_absolute_url }}">
+                            <button class="board-btn">{% trans 'Detail' %}</button>
+                        </a>
+                    </div>
+                {% endif %}
             {% endfor %}
         </div>
     {% else %}
         {% if boards_form or boards_language or boards_processor %}
             <div class="info_recomm">
                 <p>{% trans "The board that meets your requirements was not found, but we suggest that you look at the following cards that meet your criteria." %}</p>
-                <a class="btn-recomm-info" href="{% url "boards:board_list" %}">{% trans "Return to search" %}</a>
+{#                <a class="btn-recomm-info" href="{% url "boards:board_list" %}">{% trans "Return to search" %}</a>#}
             </div>
         {% endif %}
         <div class="board-tags">
@@ -82,9 +106,7 @@
     {% if not boards and not boards_language and not boards_form and not boards_processor%}
          <div class="info_recomm-err">
             <p>{% trans "The board that meets your requirements was not found. Try changing the requirements by the following criteria: programming language, family of processors, form factor." %}</p>
-            <a class="btn-recomm-err" href="{% url "boards:board_list" %}">{% trans "Return to search" %}</a>
+{#            <a class="btn-recomm-err" href="{% url "boards:board_list" %}">{% trans "Return to search" %}</a>#}
          </div>
     {% endif %}
     <div style="clear:both;"></div>
-</div>
-{% endblock %}

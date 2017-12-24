@@ -31,45 +31,45 @@
         </ul>
 {% endblock %}
 {% block content %}
-<div class="table">
-
-    <div class="requirements">
-
-        <div class="sidebar">
-            <h1>{% trans "Categories" %}</h1>
-            <ul>
-                <li {% if not category %}class="selected"{% endif %}>
-                    <a href="{% url "boards:board_list" %}">{% trans "All" %}</a>
-                </li>
-                {% for c in categories %}
-                    <li {% if category.slug == c.slug %}class="selected"{% endif %}>
-                        <a href="{{ c.get_absolute_url }}">{{ c.name }}</a>
+    <div class="table">
+        <div class="requirements">
+            <div class="sidebar">
+                <h1>{% trans "Categories" %}</h1>
+                <ul>
+                    <li {% if not category %}class="selected"{% endif %}>
+                        <a href="{% url "boards:board_list" %}">{% trans "All" %}</a>
                     </li>
-                {% endfor %}
-            </ul>
-        </div>
-        {% include "filter.html" with form=form %}
-
-    </div>
-
-    <h1>{% trans "Boards" %}</h1>
-    <div class="board-tags">
-        {% for board in boards %}
-            <div class="board-tag">
-                <img src="{{ board.image.url }}" alt="">
-                <span>{{ board.name }}</span>
-                <h4>{{ board.processor }}</h4>
-                <a href="{{ board.get_absolute_url }}">
-                    <button class="board-btn">{% trans 'Detail' %}</button>
-                </a>
+                    {% for c in categories %}
+                        <li {% if category.slug == c.slug %}class="selected"{% endif %}>
+                            <a href="{{ c.get_absolute_url }}">{{ c.name }}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
             </div>
-        {% endfor %}
+            {% include "filter.html" with form=form %}
+        </div>
+        {% if rec %}
+            {% include "boards/recommendations.html" with boards=boards %}
+        {% else %}
+        <h1>{% trans "Boards" %}</h1>
+        <div class="board-tags">
+            {% for board in boards %}
+                <div class="board-tag">
+                    <img src="{{ board.image.url }}" alt="">
+                    <span>{{ board.name }}</span>
+                    <h4>{{ board.processor }}</h4>
+                    <a href="{{ board.get_absolute_url }}">
+                        <button class="board-btn">{% trans 'Detail' %}</button>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+        <div style="clear:both;"></div>
     </div>
-    <div style="clear:both;"></div>
-</div>
     {% if page_obj %}
         {% include "pagination.html" with page=page_obj %}
     {% else %}
         {% include "pagination.html" with page=boards %}
     {% endif %}
+        {% endif %}
 {% endblock %}

@@ -272,6 +272,37 @@ input[type=submit] {
 .h_recomm{
     margin: 2.5rem;
 }
+.board-tag-main{
+    background-color: #ffffff;
+    border-radius: 2rem;
+    margin-bottom: 2rem;
+    text-align: center;
+    align-items: center;
+    width: 93%;
+    transition: 0.5s;
+    border: 1px solid rgba(204, 204, 223, 0.5);
+    height: 300px;
+}
+.board-tag-main img{
+    margin: 5rem;
+    width: 20rem;
+    height: 20rem;
+    float: left;
+}
+.board-tag-main:hover{
+    cursor: pointer;
+    box-shadow: 0 0 60px 10px rgba(204, 204, 223, 0.71);
+}
+.main-info h1{
+    color: #00abff;
+}
+.main-info b{
+    color:#487d99;
+    font-size: 1.2rem;
+}
+.main-info p{
+    color: #2e4c6b;
+}
 .info_recomm{
     margin-bottom: 2.5rem;
     padding: .1rem;
@@ -279,6 +310,8 @@ input[type=submit] {
     color: #000000;
     text-align: center;
     border-radius: 1rem;
+    display: flex;
+    justify-content: center;
 }
 .info_recomm-err{
     margin-bottom: 2.5rem;
@@ -287,6 +320,8 @@ input[type=submit] {
     color: #000000;
     text-align: center;
     border-radius: 1rem;
+    display: flex;
+    justify-content: center;
 }
 .info_recomm-good{
     margin-bottom: 2.5rem;
@@ -294,7 +329,10 @@ input[type=submit] {
     background-color: #4dbe70;
     color: #000000;
     text-align: center;
+    align-content: center;
     border-radius: 1rem;
+    display: flex;
+    justify-content: center;
 }
 .requirements_recomm{
     width: auto;
