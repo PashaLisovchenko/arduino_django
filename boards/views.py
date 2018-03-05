@@ -6,7 +6,8 @@ from django.views.generic.edit import FormMixin
 from .models import Board, Category
 from django.views.generic import ListView, DetailView
 from .forms import RequirementsForm
-from django.db.models import F, DecimalField, ExpressionWrapper, Value
+from django.db.models import F, DecimalField, ExpressionWrapper, Value, Func
+from django.db.models import Max, Min
 
 
 def get_board_form(req, boards):
@@ -94,44 +95,69 @@ def get_board(req, object_list, request, form_class, category, categories):
 
 
 def get_distance_boards(boards, analog=None, digit=None, voltage=None, price=None):
+    """
+        closer_is_better(Func(F('name_field')-float(param),function='ABS'),
+         'name_field', float(param)), output_field=DecimalField()))
+    """
     if not analog and not digit and not voltage and not price:
         return boards
     else:
+        query_line = []
         # todo рекомендовать ли платы с количеством меньше чем ввел пользователь?
         # сделать критерии, продумать формулу для росчета веса критерия
         if analog:
             # filter(analog_port__gt=0)
             # filter(analog_port__gte=int(analog))
             boards = boards.filter(analog_port__gte=int(analog)).annotate(d_analog=ExpressionWrapper(
-                    (int(analog) - F('analog_port')) * (int(analog) - F('analog_port')),
-                    output_field=DecimalField()))
+                more_is_better(F('analog_port'), 'analog_port'), output_field=DecimalField()))
+            for b in boards:
+                print(b.d_analog)
+            query_line.append('analog')
         else:
             boards = boards.annotate(d_analog=ExpressionWrapper(Value(0), output_field=DecimalField()))
         if digit:
             boards = boards.filter(digital_port__gt=0).annotate(d_digit=ExpressionWrapper(
-                (int(digit) - F('digital_port')) * (int(digit) - F('digital_port')),
-                output_field=DecimalField()))
+                more_is_better(F('digital_port'), 'digital_port'), output_field=DecimalField()))
+            query_line.append('digit')
         else:
             boards = boards.annotate(d_digit=ExpressionWrapper(Value(0), output_field=DecimalField()))
         if voltage:
             boards = boards.annotate(d_voltage=ExpressionWrapper(
-                (Decimal(voltage) - F('power')) * (Decimal(voltage) - F('power')),
+            closer_is_better(Func(F('power') - float(voltage), function='ABS'), 'power'),
                 output_field=DecimalField()))
+            query_line.append('voltage')
         else:
             boards = boards.annotate(d_voltage=ExpressionWrapper(Value(0), output_field=DecimalField()))
         if price:
             # max - min / 2 = a
             # max - a = avg
-            boards = boards.annotate(d_price=ExpressionWrapper(
-                (Decimal(price) - (F('max_price') - ((F('max_price')-F('min_price'))/2))) *
-                (Decimal(price) - (F('max_price') - ((F('max_price')-F('min_price'))/2))),
+            print(boards)
+            boards = boards.annotate(avg=
+                     (F('max_price') - ((F('max_price')-F('min_price'))/2))
+                                     ).annotate(d_price=ExpressionWrapper(
+                closer_is_better(Func(F('avg') - float(price), function='ABS'), 'price'),
                 output_field=DecimalField()))
+            for b in boards:
+                print(b.d_price)
+            query_line.append('price')
         else:
             boards = boards.annotate(d_price=ExpressionWrapper(Value(0), output_field=DecimalField()))
-
+        dict_weight = {'analog': 0.1, 'digit':0.1, 'voltage': 0.1, 'price': 0.7}
+        global_weight = 0
+        for line in query_line:
+            if line == 'analog':
+                global_weight += 0.1
+            if line == 'digit':
+                global_weight += 0.1
+            if line == 'voltage':
+                global_weight += 0.1
+            if line == 'price':
+                global_weight += 0.7
+        print(global_weight)
         boards = boards.annotate(expires=ExpressionWrapper(
-            F('d_analog') + F('d_digit') + F('d_voltage') + F('d_price'),
-            output_field=DecimalField())).order_by('expires')
+            (dict_weight['analog']*F('d_analog') + dict_weight['digit']*F('d_digit') +
+             dict_weight['voltage']*F('d_voltage') + dict_weight['price']*F('d_price'))/global_weight,
+            output_field=DecimalField())).order_by('-expires')
         print(boards)
         return boards
 
@@ -251,3 +277,30 @@ class BoardDetail(DetailView):
     context_object_name = 'board'
     pk_url_kwarg = 'pk'
     slug_url_kwarg = 'slug'
+
+
+def more_is_better(obj, obj_field):
+    max_value = Board.objects.all().aggregate(Max(str(obj_field)))
+    min_value = Board.objects.all().aggregate(Min(str(obj_field)))
+    sim = (obj - float(min_value[obj_field+'__min'])) / float(max_value[obj_field+'__max']-min_value[obj_field+'__min'])
+    return sim
+
+
+def less_is_better(obj, obj_field):
+    max_value = Board.objects.all().aggregate(Max(str(obj_field)))
+    min_value = Board.objects.all().aggregate(Min(str(obj_field)))
+    sim = (float(max_value[obj_field+'__max'])-obj) / float(max_value[obj_field+'__max']-min_value[obj_field+'__min'])
+    return sim
+
+
+def closer_is_better(obj, obj_field):
+    if obj_field == 'price':
+        max_value = Board.objects.all().aggregate(Max('max_price'))
+        min_value = Board.objects.all().aggregate(Min('min_price'))
+        sim = 1 - (obj / (float(max_value['max_price__max'] - min_value['min_price__min'])))
+        return sim
+    else:
+        max_value = Board.objects.all().aggregate(Max(str(obj_field)))
+        min_value = Board.objects.all().aggregate(Min(str(obj_field)))
+        sim = 1-(obj / float(max_value[obj_field+'__max']-min_value[obj_field+'__min']))
+        return sim

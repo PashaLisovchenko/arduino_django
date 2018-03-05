@@ -7,6 +7,7 @@ class ProcessorAdmin(admin.ModelAdmin):
 
 
 class BoardAdmin(admin.ModelAdmin):
+    list_filter =  ['programming_languages', 'processor__family']
     list_display = ('id', 'name', 'slug')
 
 
