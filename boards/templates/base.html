@@ -5,9 +5,9 @@
 <head lang="{{ LANGUAGE_CODE }}">
     <title>{% block title %}{% endblock %}</title>
     <link href="{% static "css/board.css" %}" rel="stylesheet">
+    <link rel="stylesheet" href="{% static "css/nice-select.css" %}">
 </head>
 <body>
-
     <header>
         {% block header %}
         {% endblock %}
@@ -22,6 +22,8 @@
 </html>
 
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+<script src="{% static 'js/ajax_recomended_boards.js' %}"></script>
+<script src="{% static 'js/jquery.nice-select.min.js' %}"></script>
 <script type="text/javascript">
 $(document).ready(function() {
 
@@ -68,5 +70,10 @@ $(document).ready(function() {
         btn4.toggleClass('submit_btn-active');
     });
 
+});
+</script>
+<script>
+$(document).ready(function() {
+  $('select').niceSelect();
 });
 </script>

@@ -1,10 +1,10 @@
 {% load i18n %}
 <div class="filter">
     <div class="text-head">
-        <h1>{% trans 'Requirements' %}</h1>
+        <h1 class="title_left">{% trans 'Requirements' %}:</h1>
     </div>
-    <form action="" method="POST">
-        {% csrf_token %}
+    <form action="" id="requirements">
+{#        {% csrf_token %}#}
 
         <div class="main-form">
             <div class="info">
@@ -65,7 +65,7 @@
                 <p>{{ form.form }}</p>
             </div>
 
-            <input type="submit" value={% trans 'Send' %}>
+            <input type="button"  class="send" value={% trans 'Send' %}>
         </div>
     </form>
 </div>
