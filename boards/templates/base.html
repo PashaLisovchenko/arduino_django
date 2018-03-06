@@ -59,19 +59,24 @@ $(document).ready(function() {
 
     btn1.click(function () {
         btn1.toggleClass('submit_btn-active');
+        $(btn1).parent('.info').children('.label').toggleClass('label-active');
     });
     btn2.click(function () {
         btn2.toggleClass('submit_btn-active');
+        $(btn2).parent('.info').children('.label').toggleClass('label-active');
     });
     btn3.click(function () {
         btn3.toggleClass('submit_btn-active');
+        $(btn3).parent('.info').children('.label').toggleClass('label-active');
     });
     btn4.click(function () {
         btn4.toggleClass('submit_btn-active');
+        $(btn4).parent('.info').children('.label').toggleClass('label-active');
     });
 
 });
 </script>
+
 <script>
 $(document).ready(function() {
   $('select').niceSelect();

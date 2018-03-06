@@ -200,22 +200,6 @@ class BoardList(FormMixin, ListView):
         context['categories'] = categories
         return context
 
-    # def post(self, request, *args, **kwargs):
-    #     print(self.request.is_ajax())
-    #     form = self.get_form()
-    #     if form.is_valid():
-    #         return self.form_valid(form)
-    #     else:
-    #         return self.form_invalid(form)
-    #
-    # def form_valid(self, form):
-    #     print(self.request.POST)
-    #     req = self.request.POST
-    #     object_list = Board.objects.all()
-    #     category = None
-    #     categories = Category.objects.all()
-    #     return get_board(req, object_list, self.request, self.form_class, category, categories)
-
 
 class BoardListByCategory(FormMixin, DetailView):
     template_name = 'boards/list.html'
@@ -249,26 +233,10 @@ class BoardListByCategory(FormMixin, DetailView):
             category_boards = Board.objects.filter(category=category)
             categories = Category.objects.all()
             return get_board(req, category_boards, self.request, self.form_class, category, categories)
-
         else:
             self.object = self.get_object()
             context = self.get_context_data(object=self.object)
             return self.render_to_response(context)
-
-    # def post(self, request, *args, **kwargs):
-    #     form = self.get_form()
-    #     if form.is_valid():
-    #         return self.form_valid(form)
-    #     else:
-    #         return self.form_invalid(form)
-    #
-    # def form_valid(self, form):
-    #     print(self.request.POST)
-    #     category = self.get_object()
-    #     category_boards = Board.objects.filter(category=category)
-    #     req = self.request.POST
-    #     categories = Category.objects.all()
-    #     return get_board(req, category_boards, self.request, self.form_class, category, categories)
 
 
 class BoardDetail(DetailView):

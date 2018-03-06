@@ -1,4 +1,5 @@
 {% load i18n %}
+{% load staticfiles %}
 <div class="filter">
     <div class="text-head">
         <h1 class="title_left">{% trans 'Requirements' %}:</h1>
@@ -8,10 +9,8 @@
 
         <div class="main-form">
             <div class="info">
-                <label>{% trans 'Stakeholder' %}</label>
-                <a class="submit_btn submit_btn-active" id="submit_btn-strq">
-                     <span></span>
-                </a>
+                <label class="label label-active">{% trans 'Stakeholder' %}</label>
+                <img class="submit_btn submit_btn-active" id="submit_btn-strq" src="{% static "img/svg/down-arrow.svg" %}" alt="down_arrow">
             </div>
 
             <div class="field" id="contact_form-1">
@@ -20,10 +19,8 @@
             </div>
 
             <div class="info">
-                <label>{% trans 'Feature Hardware' %}</label>
-                <a class="submit_btn" id="submit_btn-hw">
-                    <span></span>
-                </a>
+                <label class="label">{% trans 'Feature Hardware' %}</label>
+                <img class="submit_btn" id="submit_btn-hw" src="{% static "img/svg/down-arrow.svg" %}" alt="down_arrow">
             </div>
 
             <div class="field" id="contact_form-2">
@@ -41,10 +38,8 @@
             </div>
 
             <div class="info">
-                <label>{% trans 'Feature Software' %}</label>
-                <a class="submit_btn" id="submit_btn-sw">
-                    <span></span>
-                </a>
+                <label class="label">{% trans 'Feature Software' %}</label>
+                <img class="submit_btn" id="submit_btn-sw" src="{% static "img/svg/down-arrow.svg" %}" alt="down_arrow">
             </div>
             <div class="field" id="contact_form-3">
                 <label for="{{ form.language.id_for_label }}">{% trans 'Language' %}</label>
@@ -52,10 +47,8 @@
             </div>
 
             <div class="info">
-                <label>{% trans 'Supplementary' %}</label>
-                <a class="submit_btn" id="submit_btn-supl">
-                    <span></span>
-                </a>
+                <label class="label">{% trans 'Supplementary' %}</label>
+                <img class="submit_btn" id="submit_btn-supl" src="{% static "img/svg/down-arrow.svg" %}" alt="down_arrow">
             </div>
             <div class="field" id="contact_form-4">
                 <label for="{{ form.price.id_for_label }}">{% trans 'Price' %}</label>

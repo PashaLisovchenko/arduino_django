@@ -1,28 +1,31 @@
 <div class="recommend-update">
 {% load i18n %}
-    <h1>{% trans "Recommendations" %}</h1>
+{% load static %}
+    <h1 class="title_center">{% trans "Recommendations" %}</h1>
 
     {% if boards %}
         {% if boards.count == 1 %}
             <div class="info_recomm-good">
                 <p>{% trans "The board that meets your requirements was found." %}</p>
-{#                <a class="btn-recomm-good" href="{% url "boards:board_list" %}">{% trans "Return to search" %}</a>#}
             </div>
         {% else %}
             <div class="info_recomm-good">
                 <p>{% trans "The board that meets your requirements was found: it displayed first. But we also advise you to look at the following boards that meet your criteria." %}</p>
-{#                <a class="btn-recomm-good" href="{% url "boards:board_list" %}">{% trans "Return to search" %}</a>#}
             </div>
         {% endif %}
+
         <div class="board-tags">
             {% for board in boards %}
                 {% if forloop.first %}
                     <div class="board-tag-main">
-                        <a href="{{ board.get_absolute_url }}"><img src="{{ board.image.url }}" alt=""></a>
+                        <div class="image-main-rec">
+                           <a href="{{ board.get_absolute_url }}"><img src="{{ board.image.url }}" alt=""></a>
+                        </div>
                         <div class="main-info">
                             <h1>{{ board.name }}</h1>
-                            <p><b>{% trans "Processor Family" %}:</b> {{ board.processor.family }}</p>
-                            <p><b>{% trans "Processor" %}:</b> {{ board.processor.name }}</p>
+                            <div class="detail-info">
+                                <p><b>{% trans "Processor Family" %}:</b> {{ board.processor.family }}</p>
+                                <p><b>{% trans "Processor" %}:</b> {{ board.processor.name }}</p>
                                 {% if board.min_price == board.max_price %}
                                     <p><b>{% trans "Price" %}:</b> {{ board.min_price }}</p>
                                 {% else %}
@@ -32,6 +35,14 @@
                                 <p><b>{% trans "Analog" %}:</b> {{ board.analog_port }}</p>
                                 <p><b>{% trans "Digital" %}:</b> {{ board.digital_port }}</p>
                                 <p><b>{% trans "Voltage" %}:</b> {{ board.power }}</p>
+                                <p><b>{% trans "Free IDE" %}:</b>
+                                {% for ide in board.free_ide.all %}
+                                    {% if forloop.last %}
+                                        {{ ide }}.
+                                    {% else %}
+                                       {{ ide }},
+                                    {% endif %}
+                                {% endfor %}
                                 <p><b>{% trans "Language" %}:</b>
                                 {% for l in board.programming_languages.all %}
                                     {% if forloop.last %}
@@ -41,16 +52,21 @@
                                     {% endif %}
                                 {% endfor %}
                                 </p>
+                            </div>
                         </div>
                     </div>
-                    {% else %}
+                {% else %}
                     <div class="board-tag">
+                        <div class="information">
+                            <div class="text">
+                                <span>{{ board.name }}</span>
+                                <h4>{{ board.processor }}</h4>
+                            </div>
+                            <a class="board-btn" href="{{ board.get_absolute_url }}">
+                                <img class="svg" src="{% static "img/svg/menu-button.svg" %}" alt="down_arrow">
+                            </a>
+                        </div>
                         <img src="{{ board.image.url }}" alt="">
-                        <span>{{ board.name }}</span>
-                        <h4>{{ board.processor }}</h4>
-                        <a href="{{ board.get_absolute_url }}">
-                            <button class="board-btn">{% trans 'Detail' %}</button>
-                        </a>
                     </div>
                 {% endif %}
             {% endfor %}
@@ -68,12 +84,16 @@
                 <div class="requirements_recomm">
                      <span>{% trans "Form" %}</span>
                 </div>
+                <div class="information">
+                    <div class="text">
+                        <span>{{ boards_form.first.name }}</span>
+                        <h4>{{ boards_form.first.processor }}</h4>
+                    </div>
+                    <a class="board-btn" href="{{ boards_form.first.get_absolute_url }}">
+                        <img class="svg" src="{% static "img/svg/menu-button.svg" %}" alt="down_arrow">
+                    </a>
+                </div>
                 <img src="{{ boards_form.first.image.url }}" alt="">
-                <span>{{ boards_form.first.name }}</span>
-                <h4>{{ boards_form.first.processor }}</h4>
-                <a href="{{ boards_form.first.get_absolute_url }}">
-                    <button class="board-btn">{% trans 'Detail' %}</button>
-                </a>
             </div>
         {% endif %}
         {% if  boards_processor %}
@@ -81,12 +101,16 @@
                 <div class="requirements_recomm">
                      <span>{% trans "Processor" %}</span>
                 </div>
+                <div class="information">
+                    <div class="text">
+                        <span>{{ boards_processor.first.name }}</span>
+                        <h4>{{ boards_processor.first.processor }}</h4>
+                    </div>
+                    <a class="board-btn" href="{{ boards_processor.first.get_absolute_url }}">
+                        <img class="svg" src="{% static "img/svg/menu-button.svg" %}" alt="down_arrow">
+                    </a>
+                </div>
                 <img src="{{ boards_processor.first.image.url }}" alt="">
-                <span>{{ boards_processor.first.name }}</span>
-                <h4>{{ boards_processor.first.processor }}</h4>
-                <a href="{{ boards_processor.first.get_absolute_url }}">
-                    <button class="board-btn">{% trans 'Detail' %}</button>
-                </a>
             </div>
         {% endif %}
         {% if  boards_language %}
@@ -94,12 +118,16 @@
                 <div class="requirements_recomm">
                      <span>{% trans "Language" %}</span>
                 </div>
+                <div class="information">
+                    <div class="text">
+                        <span>{{ boards_language.first.name }}</span>
+                        <h4>{{ boards_language.first.processor }}</h4>
+                    </div>
+                    <a class="board-btn" href="{{ boards_language.first.get_absolute_url }}">
+                        <img class="svg" src="{% static "img/svg/menu-button.svg" %}" alt="down_arrow">
+                    </a>
+                </div>
                 <img src="{{ boards_language.first.image.url }}" alt="">
-                <span>{{ boards_language.first.name }}</span>
-                <h4>{{ boards_language.first.processor }}</h4>
-                <a href="{{ boards_language.first.get_absolute_url }}">
-                    <button class="board-btn">{% trans 'Detail' %}</button>
-                </a>
             </div>
         {% endif %}
         </div>
