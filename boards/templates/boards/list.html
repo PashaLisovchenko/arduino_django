@@ -3,6 +3,7 @@
 {% load staticfiles %}
 {% block title %}{% trans "Boards" %}{% endblock %}
 {% block header %}
+    {% if not rec %}
     <ul class="menu">
             <li>
                 <form id='lang_en' action='{% url 'set_language' %}' method='POST'>{% csrf_token %}
@@ -29,6 +30,7 @@
                 </form>
             </li>
         </ul>
+     {% endif %}
 {% endblock %}
 {% block content %}
     <div class="table">
@@ -50,7 +52,7 @@
             </div>
             {% include "filter.html" with form=form %}
         </div>
-        <h1 class="title_center">{% trans "Boards" %}</h1>
+        <h1 class="title_center" id="boards">{% trans "Boards" %}</h1>
         <div class="board-tags">
             {% for board in boards %}
                 <div class="board-tag">
