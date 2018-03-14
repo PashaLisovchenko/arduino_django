@@ -50,6 +50,7 @@ header ul.menu li {
 .requirements{
     float: left;
     width: 27rem;
+    margin-left: 2rem;
 }
 .sidebar ul{
     margin:0;
@@ -60,7 +61,7 @@ header ul.menu li {
     font-size: 1.5rem;
     line-height: 1.66;
     font-weight: 700;
-    letter-spacing: 3px;
+    letter-spacing: .3rem;
     text-transform: uppercase;
     font-family: "stratum","Arial Narrow","Trebuchet MS",sans-serif;
     text-align: left!important;
@@ -86,7 +87,7 @@ header ul.menu li {
     content: '';
     display: block;
     width: 100%;
-    height: 2px;
+    height: .2rem;
     opacity: 1;
     background: linear-gradient(-135deg, #5786b8 10%, #5786b8 4%, #1098AD 100%);
     transform-origin: center;
@@ -244,7 +245,7 @@ input[type=submit] {
     align-items: center;
     flex-direction: row;
     flex-wrap: wrap;
-    padding: 0 10rem 1rem 10rem;
+    padding: 0 5rem 1rem 5rem;
 }
 .board-tag{
     position: relative;
@@ -303,7 +304,7 @@ input[type=submit] {
 }
 .text{
     word-break: break-all;
-    width: 180px;
+    width: 18rem;
 }
 .board-btn{
     margin: 1.5rem;
@@ -316,14 +317,22 @@ input[type=submit] {
     font-weight: bold;
     border-radius: .4rem;
     box-shadow: 0 0 .5rem .1rem rgba(0, 0, 0, .5);
-    width: 30px;
-    height: 30px;
+    width: 3rem;
+    height: 3rem;
 }
 .board-btn .svg{
     width: 100%;
     height: 100%;
 }
 /*board detail*/
+.recommend-update{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding: 0 5rem 1rem 5rem;
+}
 .detail{
     display: table;
     padding: 1rem;
@@ -331,9 +340,6 @@ input[type=submit] {
     margin: 0 auto;
     background-color: #ffffff;
     border-radius: 1rem;
-}
-.detail-info{
-
 }
 .detail-img{
     float: left;
@@ -346,9 +352,12 @@ input[type=submit] {
     text-align: center;
     align-items: center;
     transition: 0.5s;
-    /*border: .1rem solid rgba(204, 204, 223, 0.5);*/
     height: 35rem;
-    width: 95%;
+    width: 100%;
+}
+.recom_list{
+    padding: 0;
+    width: 100%;
 }
 .board-tag-main:hover{
     cursor: pointer;
@@ -439,14 +448,25 @@ input[type=submit] {
     text-align: center;
     bottom: 0;
 }
-.requirements_recomm span{
-    /*color: #2e4c6b;*/
-}
 @media screen and (max-width: 400px) {
+    html{
+        font-size: 9px;
+    }
     header ul.menu {
       justify-content: center;
     }
     .board-tags{
         padding: 0;
+    }
+    .requirements{
+        margin-left: 0;
+    }
+    .recommend-update{
+        padding: 0;
+    }
+}
+@media screen and (min-width: 1919px) {
+    html{
+        font-size: 14px;
     }
 }

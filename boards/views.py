@@ -166,7 +166,7 @@ class BoardList(FormMixin, ListView):
     template_name = 'boards/list.html'
     model = Board
     form_class = RequirementsForm
-    paginate_by = 9
+    paginate_by = 12
     context_object_name = 'boards'
 
     def get(self, request, *args, **kwargs):

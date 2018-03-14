@@ -1,8 +1,8 @@
-<div class="recommend-update">
+
 {% load i18n %}
 {% load static %}
-    <h1 class="title_center">{% trans "Recommendations" %}</h1>
-
+<h1 class="title_center">{% trans "Recommendations" %}</h1>
+<div class="recommend-update">
     {% if boards %}
         {% if boards.count == 1 %}
             <div class="info_recomm-good">
@@ -14,7 +14,7 @@
             </div>
         {% endif %}
 
-        <div class="board-tags">
+        <div class="board-tags recom_list">
             {% for board in boards %}
                 {% if forloop.first %}
                     <div class="board-tag-main">
@@ -78,7 +78,7 @@
 {#                <a class="btn-recomm-info" href="{% url "boards:board_list" %}">{% trans "Return to search" %}</a>#}
             </div>
         {% endif %}
-        <div class="board-tags">
+        <div class="board-tags recom_list">
         {% if  boards_form %}
             <div class="board-tag">
                 <div class="requirements_recomm">
@@ -135,7 +135,6 @@
     {% if not boards and not boards_language and not boards_form and not boards_processor%}
          <div class="info_recomm-err">
             <p>{% trans "The board that meets your requirements was not found. Try changing the requirements by the following criteria: programming language, family of processors, form factor." %}</p>
-{#            <a class="btn-recomm-err" href="{% url "boards:board_list" %}">{% trans "Return to search" %}</a>#}
          </div>
     {% endif %}
     <div style="clear:both;"></div>
