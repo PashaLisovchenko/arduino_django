@@ -49,7 +49,7 @@ header ul.menu li {
 /*requirements sidebar + filter*/
 .requirements{
     float: left;
-    width: 27rem;
+    width: 25rem;
     margin-left: 2rem;
 }
 .sidebar ul{
@@ -400,6 +400,7 @@ input[type=submit] {
     color: #515151;
 }
 .info_recomm{
+    width: 100%;
     margin-bottom: 2.5rem;
     padding: .4rem 1rem;
     background-color: #fff78e;
@@ -413,6 +414,7 @@ input[type=submit] {
     justify-content: center;
 }
 .info_recomm-err{
+    width: 100%;
     margin-bottom: 2.5rem;
     padding: .4rem 1rem;
     background-color: #ff9886;
@@ -426,6 +428,7 @@ input[type=submit] {
     justify-content: center;
 }
 .info_recomm-good{
+    width: 100%;
     margin-bottom: 2.5rem;
     padding: .4rem 1rem;
     background-color: #4dbe70;
@@ -460,9 +463,15 @@ input[type=submit] {
     }
     .requirements{
         margin-left: 0;
+        width: 100%;
     }
     .recommend-update{
         padding: 0;
+    }
+}
+@media screen and (min-width: 1599px) {
+    html{
+        font-size: 11px;
     }
 }
 @media screen and (min-width: 1919px) {
