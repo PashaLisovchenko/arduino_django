@@ -451,6 +451,14 @@ input[type=submit] {
     text-align: center;
     bottom: 0;
 }
+/*@media screen and (max-width: 301px) {*/
+    /*html{*/
+        /*font-size: 9px;*/
+    /*}*/
+    /*.information{*/
+        /*width: 120%;*/
+    /*}*/
+/*}*/
 @media screen and (max-width: 400px) {
     html{
         font-size: 9px;
@@ -465,8 +473,26 @@ input[type=submit] {
         margin-left: 0;
         width: 100%;
     }
-    .recommend-update{
+    .recommend-update {
         padding: 0;
+    }
+    .board-tag{
+        width: 100%;
+    }
+    .information{
+        width: 110%;
+    }
+    .board-tag-main{
+        height: 100%;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+    .image-main-rec{
+        width: 100%;
+    }
+    .main-info{
+        width: 100%;
     }
 }
 @media screen and (min-width: 1599px) {

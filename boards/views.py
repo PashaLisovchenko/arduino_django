@@ -109,7 +109,7 @@ def get_distance_boards(boards, analog=None, digit=None, voltage=None, price=Non
             # filter(analog_port__gt=0)
             # filter(analog_port__gte=int(analog))
             boards = boards.filter(analog_port__gte=int(analog)).annotate(d_analog=ExpressionWrapper(
-                more_is_better(F('analog_port'), 'analog_port'), output_field=DecimalField()))
+                closer_is_better2(Func(F('analog_port') - float(analog), function='ABS'), 'analog_port'), output_field=DecimalField()))
             for b in boards:
                 print(b.d_analog)
             query_line.append('analog')
@@ -271,4 +271,11 @@ def closer_is_better(obj, obj_field):
         max_value = Board.objects.all().aggregate(Max(str(obj_field)))
         min_value = Board.objects.all().aggregate(Min(str(obj_field)))
         sim = 1-(obj / float(max_value[obj_field+'__max']-min_value[obj_field+'__min']))
+        return sim
+
+
+def closer_is_better2(obj, obj_field):
+        max_value = Board.objects.all().aggregate(Max(str(obj_field)))
+        min_value = Board.objects.all().aggregate(Min(str(obj_field)))
+        sim = 1 - (obj / (float(max_value[obj_field+'__max'] - min_value[obj_field+'__min'])))
         return sim
