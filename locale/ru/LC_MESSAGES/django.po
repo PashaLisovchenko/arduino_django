@@ -111,7 +111,7 @@ msgstr "Подробно"
 
 #: boards/templates/boards/recommendations.html:8
 msgid "Recommendations"
-msgstr "Рекомендации"
+msgstr "Рекоммендации"
 
 #: boards/templates/boards/recommendations.html:13
 msgid "The board that meets your requirements was found."
