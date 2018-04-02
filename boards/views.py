@@ -142,7 +142,7 @@ def get_distance_boards(boards, analog=None, digit=None, voltage=None, price=Non
             query_line.append('price')
         else:
             boards = boards.annotate(d_price=ExpressionWrapper(Value(0), output_field=DecimalField()))
-        dict_weight = {'analog': 0.1, 'digit':0.1, 'voltage': 0.1, 'price': 0.7}
+        dict_weight = {'analog': 0.1, 'digit': 0.1, 'voltage': 0.1, 'price': 0.7}
         global_weight = 0
         for line in query_line:
             if line == 'analog':
@@ -153,7 +153,6 @@ def get_distance_boards(boards, analog=None, digit=None, voltage=None, price=Non
                 global_weight += 0.1
             if line == 'price':
                 global_weight += 0.7
-        print(global_weight)
         boards = boards.annotate(expires=ExpressionWrapper(
             (dict_weight['analog']*F('d_analog') + dict_weight['digit']*F('d_digit') +
              dict_weight['voltage']*F('d_voltage') + dict_weight['price']*F('d_price'))/global_weight,
@@ -212,7 +211,7 @@ class BoardListByCategory(FormMixin, DetailView):
         context = super(BoardListByCategory, self).get_context_data(**kwargs)
         categories = Category.objects.all()
         object_list = Board.objects.filter(category=context['category'])
-        paginator = Paginator(object_list, 9)  # 3 posts in each page
+        paginator = Paginator(object_list, 12)
         page = self.request.GET.get('page')
         try:
             boards = paginator.page(page)

@@ -37,6 +37,7 @@ $(document).ready(function() {
         function recommendation(data) {
             console.log("SUCCESS");
             $('#boards').css({display: 'none'});
+            $('.pagination').css({display: 'none'});
             $('.board-tags').css({display: 'none'});
             $('.recommend').html(data);
         }

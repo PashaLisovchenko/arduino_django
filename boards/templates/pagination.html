@@ -1,4 +1,5 @@
 <div class="pagination">
+{% if page.has_next or page.has_previous %}
     {% if page.has_previous %}
         <a href="?page={{ page.previous_page_number }}">&laquo;</a>
     {% else %}
@@ -18,4 +19,5 @@
     {% else %}
         <a class="disabled"><span>&raquo;</span></a>
     {% endif %}
+{% endif %}
 </div>
