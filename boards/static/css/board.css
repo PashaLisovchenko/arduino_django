@@ -211,12 +211,35 @@ input[type=submit] {
 
 /*pagination html*/
 .pagination{
-    font-size: 1.4rem;
-    margin: 1rem;
+    font-family: "Ubuntu Mono", sans-serif;
+    font-size: 1.6rem;
+    margin: 2rem;
     text-align: center;
-    color: #ffffff;
+    color: #000000;
 }
-
+.pagination a {
+    color: black;
+    padding: 8px 16px;
+    text-decoration: none;
+}
+.pagination a.active {
+    background: linear-gradient(-135deg, rgb(87, 134, 184) 10%, rgb(87, 134, 184) 4%, rgb(16, 152, 173) 100%);
+    color: white;
+}
+.pagination span{
+    -moz-user-select: none;
+    -o-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
+}
+.pagination a:hover:not(.active), a:hover:not(.disabled){
+    cursor: pointer;
+    background-color: #d2d2d2;
+}
+.pagination a.disabled:hover{
+    cursor: default;
+    background-color: #efefef;
+}
 /*board list*/
 .title_center{
     font-family: "stratum","Arial Narrow","Trebuchet MS",sans-serif;
@@ -267,7 +290,7 @@ input[type=submit] {
     color: #000000;
     font-weight: 700;
     text-transform: uppercase;
-    font-size: 1.4rem;
+    font-size: 1.3rem;
     margin-left: 1rem;
 }
 
@@ -487,13 +510,18 @@ input[type=submit] {
         width: 100%;
     }
 }
-@media screen and (min-width: 1599px) {
+@media screen and (min-width: 1200px) {
+    html{
+        font-size: 9px;
+    }
+}
+@media screen and (min-width: 1499px) {
     html{
         font-size: 11px;
     }
 }
 @media screen and (min-width: 1919px) {
     html{
-        font-size: 14px;
+        font-size: 12px;
     }
 }

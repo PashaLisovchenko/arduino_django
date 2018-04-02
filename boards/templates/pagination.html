@@ -1,16 +1,21 @@
-{% load i18n %}
 <div class="pagination">
-    <span class="step-links">
-        {% if page.has_previous %}
-            <a href="?page={{ page.previous_page_number }}">{% trans 'Previous' %}</a>
-        {% endif %}
+    {% if page.has_previous %}
+        <a href="?page={{ page.previous_page_number }}">&laquo;</a>
+    {% else %}
+        <a class="disabled"><span>&laquo;</span></a>
+    {% endif %}
 
-        <span class="current">
-            {% trans 'Page' %} {{ page.number }} {% trans 'of' %} {{ page.paginator.num_pages }}.
-        </span>
-
-        {% if page.has_next %}
-            <a href="?page={{ page.next_page_number }}">{% trans 'Next' %}</a>
+    {% for i in page.paginator.page_range %}
+        {% if page.number == i %}
+            <a class="active"><span>{{ i }}</span></a>
+        {% else %}
+            <a href="?page={{ i }}">{{ i }}</a>
         {% endif %}
-    </span>
+    {% endfor %}
+
+    {% if page.has_next %}
+        <a href="?page={{ page.next_page_number }}">&raquo;</a>
+    {% else %}
+        <a class="disabled"><span>&raquo;</span></a>
+    {% endif %}
 </div>
