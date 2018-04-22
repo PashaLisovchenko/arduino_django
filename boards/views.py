@@ -103,27 +103,21 @@ def get_distance_boards(boards, analog=None, digit=None, voltage=None, price=Non
         return boards
     else:
         query_line = []
-        # todo рекомендовать ли платы с количеством меньше чем ввел пользователь?
-        # сделать критерии, продумать формулу для росчета веса критерия
         if analog:
-            # filter(analog_port__gt=0)
-            # filter(analog_port__gte=int(analog))
             boards = boards.filter(analog_port__gte=int(analog)).annotate(d_analog=ExpressionWrapper(
-                closer_is_better2(Func(F('analog_port') - float(analog), function='ABS'), 'analog_port'), output_field=DecimalField()))
-            for b in boards:
-                print(b.d_analog)
+                closer_is_better(Func(F('analog_port')-int(analog), function='ABS'), 'analog_port'), output_field=DecimalField()))
             query_line.append('analog')
         else:
             boards = boards.annotate(d_analog=ExpressionWrapper(Value(0), output_field=DecimalField()))
         if digit:
-            boards = boards.filter(digital_port__gt=0).annotate(d_digit=ExpressionWrapper(
-                more_is_better(F('digital_port'), 'digital_port'), output_field=DecimalField()))
+            boards = boards.filter(digital_port__gte=int(digit)).annotate(d_digit=ExpressionWrapper(
+                closer_is_better(Func(F('digital_port')-int(digit), function='ABS'), 'digital_port'), output_field=DecimalField()))
             query_line.append('digit')
         else:
             boards = boards.annotate(d_digit=ExpressionWrapper(Value(0), output_field=DecimalField()))
         if voltage:
-            boards = boards.annotate(d_voltage=ExpressionWrapper(
-            closer_is_better(Func(F('power') - float(voltage), function='ABS'), 'power'),
+            boards = boards.filter(power__gte=float(voltage)).annotate(d_voltage=ExpressionWrapper(
+                closer_is_better(Func(F('power') - float(voltage), function='ABS'), 'power'),
                 output_field=DecimalField()))
             query_line.append('voltage')
         else:
@@ -134,8 +128,8 @@ def get_distance_boards(boards, analog=None, digit=None, voltage=None, price=Non
             print(boards)
             boards = boards.annotate(avg=
                      (F('max_price') - ((F('max_price')-F('min_price'))/2))
-                                     ).annotate(d_price=ExpressionWrapper(
-                closer_is_better(Func(F('avg') - float(price), function='ABS'), 'price'),
+                                     ).filter(avg__gt=0).annotate(d_price=ExpressionWrapper(
+                less_is_better_price(F('avg')),
                 output_field=DecimalField()))
             for b in boards:
                 print(b.d_price)
@@ -260,21 +254,22 @@ def less_is_better(obj, obj_field):
     return sim
 
 
+def less_is_better_price(obj):
+    max_value = Board.objects.all().aggregate(Max('max_price'))
+    min_value = Board.objects.all().aggregate(Min('min_price'))
+    sim = (float(max_value['max_price__max'])-obj) / float(max_value['max_price__max']-min_value['min_price__min'])
+    return sim
+
+
+def closer_is_better_price(obj):
+    max_value = Board.objects.all().aggregate(Max('max_price'))
+    min_value = Board.objects.all().aggregate(Min('min_price'))
+    sim = 1 - (obj / (float(max_value['max_price__max'] - min_value['min_price__min'])))
+    return sim
+
+
 def closer_is_better(obj, obj_field):
-    if obj_field == 'price':
-        max_value = Board.objects.all().aggregate(Max('max_price'))
-        min_value = Board.objects.all().aggregate(Min('min_price'))
-        sim = 1 - (obj / (float(max_value['max_price__max'] - min_value['min_price__min'])))
-        return sim
-    else:
-        max_value = Board.objects.all().aggregate(Max(str(obj_field)))
-        min_value = Board.objects.all().aggregate(Min(str(obj_field)))
-        sim = 1-(obj / float(max_value[obj_field+'__max']-min_value[obj_field+'__min']))
-        return sim
-
-
-def closer_is_better2(obj, obj_field):
-        max_value = Board.objects.all().aggregate(Max(str(obj_field)))
-        min_value = Board.objects.all().aggregate(Min(str(obj_field)))
-        sim = 1 - (obj / (float(max_value[obj_field+'__max'] - min_value[obj_field+'__min'])))
-        return sim
+    max_value = Board.objects.all().aggregate(Max(str(obj_field)))
+    min_value = Board.objects.all().aggregate(Min(str(obj_field)))
+    sim = 1 - (obj / (float(max_value[obj_field+'__max'] - min_value[obj_field+'__min'])))
+    return sim
