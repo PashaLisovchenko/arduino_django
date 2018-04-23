@@ -38,6 +38,7 @@ $(document).ready(function() {
             console.log("SUCCESS");
             $('#boards').css({display: 'none'});
             $('.pagination').css({display: 'none'});
+            $('.menu').css({display: 'none'});
             $('.board-tags').css({display: 'none'});
             $('.recommend').html(data);
         }
