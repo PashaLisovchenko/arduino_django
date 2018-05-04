@@ -37,6 +37,11 @@ def get_board(req, object_list, request, form_class, category, categories):
             .filter(knowledge_level__lt=know_level)
     kl = boards
     query_response = []
+    if not req['language'] and not req['processor_family'] and not req['analog'] and not req['digit'] and \
+            not req['voltage'] and not req['price'] and not req['form']:
+        return render(request, 'boards/recommendations.html', {'boards': boards, 'category': category,
+                                                               'categories': categories,
+                                                               'rec': True})
 
     boards = get_distance_boards(kl, analog=req['analog'], digit=req['digit'],
                                  voltage=req['voltage'], price=req['price'])

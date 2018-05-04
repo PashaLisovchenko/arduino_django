@@ -339,6 +339,7 @@ input[type=submit] {
 .board-btn .svg{
     width: 100%;
     height: 100%;
+    padding: 0;
 }
 /*board detail*/
 .recommend-update{
@@ -374,14 +375,25 @@ input[type=submit] {
 .recom_list{
     padding: 0;
     width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
+    flex-wrap: wrap;
 }
 .recomm_item {
     padding: 3rem;
     margin-bottom: 2rem;
     width: 27rem;
     height: 30rem;
-    margin-right: 2.2rem;
+    margin-right: 0;
 }
+.recomm_item img{
+    width: 20rem;
+    height: 20rem;
+    padding-top: 1rem;
+}
+
 .board-tag-main:hover{
     cursor: pointer;
 }
@@ -395,6 +407,11 @@ input[type=submit] {
     margin-top: 1.5rem;
     width: 45%;
     height: 90%;
+}
+.board-tag img{
+    height: 20rem;
+    width: 20rem;
+    padding: 0;
 }
 .main-info{
     font-family: "stratum","Arial Narrow","Trebuchet MS",sans-serif;
