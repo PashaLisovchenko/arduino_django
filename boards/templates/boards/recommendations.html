@@ -57,16 +57,32 @@
                     </div>
                 {% else %}
                     <div class="board-tag recomm_item">
-                        <div class="information">
-                            <div class="text">
-                                <span>{{ board.name }}</span>
-                                <h4>{{ board.processor }}</h4>
-                            </div>
-                            <a class="board-btn" href="{{ board.get_absolute_url }}">
-                                <img class="svg" src="{% static "img/svg/menu-button.svg" %}" alt="down_arrow">
-                            </a>
+                        <div class="board-tag--description">
+                            <a class="play-button" href="{{ board.get_absolute_url }}">
+                            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 50 50">
+                              <path d="M42.7,42.7L25,50L7.3,42.7L0,25L7.3,7.3L25,0l17.7,7.3L50,25L42.7,42.7z" class="polygon"></path>
+                                <rect x="12" y="22.5" width="25" height="3" fill="white"/>
+                                <rect x="12" y="15.5" width="25" height="3" fill="white"/>
+                                <rect x="12" y="29.5" width="25" height="3" fill="white"/>
+                            </svg>
+                          </a>
+                            <h3 class="roll-up">
+                                {% for latter in board.name %}
+                                  <span><span>{{latter}}</span><span>{{latter}}</span></span>
+                                {% endfor %}
+                            </h3>
+                            <p class="text-reveal">
+                              <span>
+                                <span>Family {{ board.processor.family }}</span>
+                                <span>{{ board.processor }}</span>
+                              </span>
+                              <span>
+                                <span><span>Family {{ board.processor.family }}</span></span>
+                                <span><span>{{ board.processor }}</span></span>
+                              </span>
+                            </p>
                         </div>
-                        <img src="{{ board.image.url }}" alt="">
+                        <img class="board_img" src="{{ board.image.url }}" alt="">
                     </div>
                 {% endif %}
             {% endfor %}
@@ -75,7 +91,6 @@
         {% if boards_form or boards_language or boards_processor %}
             <div class="info_recomm">
                 <p>{% trans "The board that meets your requirements was not found, but we suggest that you look at the following cards that meet your criteria." %}</p>
-{#                <a class="btn-recomm-info" href="{% url "boards:board_list" %}">{% trans "Return to search" %}</a>#}
             </div>
         {% endif %}
         <div class="board-tags recom_list">
@@ -84,16 +99,32 @@
                 <div class="requirements_recomm">
                      <span>{% trans "Form" %}</span>
                 </div>
-                <div class="information">
-                    <div class="text">
-                        <span>{{ boards_form.first.name }}</span>
-                        <h4>{{ boards_form.first.processor }}</h4>
-                    </div>
-                    <a class="board-btn" href="{{ boards_form.first.get_absolute_url }}">
-                        <img class="svg" src="{% static "img/svg/menu-button.svg" %}" alt="down_arrow">
-                    </a>
+                <div class="board-tag--description">
+                    <a class="play-button" href="{{ boards_form.first.get_absolute_url }}">
+                    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 50 50">
+                      <path d="M42.7,42.7L25,50L7.3,42.7L0,25L7.3,7.3L25,0l17.7,7.3L50,25L42.7,42.7z" class="polygon"></path>
+                        <rect x="12" y="22.5" width="25" height="3" fill="white"/>
+                        <rect x="12" y="15.5" width="25" height="3" fill="white"/>
+                        <rect x="12" y="29.5" width="25" height="3" fill="white"/>
+                    </svg>
+                  </a>
+                    <h3 class="roll-up">
+                        {% for latter in boards_form.first.name %}
+                          <span><span>{{latter}}</span><span>{{latter}}</span></span>
+                        {% endfor %}
+                    </h3>
+                    <p class="text-reveal">
+                      <span>
+                        <span>Family {{ boards_form.first.processor.family }}</span>
+                        <span>{{ boards_form.first.processor }}</span>
+                      </span>
+                      <span>
+                        <span><span>Family {{ boards_form.first.processor.family }}</span></span>
+                        <span><span>{{ boards_form.first.processor }}</span></span>
+                      </span>
+                    </p>
                 </div>
-                <img src="{{ boards_form.first.image.url }}" alt="">
+                <img class="board_img" src="{{ boards_form.first.image.url }}" alt="">
             </div>
         {% endif %}
         {% if  boards_processor %}
@@ -101,16 +132,32 @@
                 <div class="requirements_recomm">
                      <span>{% trans "Processor" %}</span>
                 </div>
-                <div class="information">
-                    <div class="text">
-                        <span>{{ boards_processor.first.name }}</span>
-                        <h4>{{ boards_processor.first.processor }}</h4>
-                    </div>
-                    <a class="board-btn" href="{{ boards_processor.first.get_absolute_url }}">
-                        <img class="svg" src="{% static "img/svg/menu-button.svg" %}" alt="down_arrow">
-                    </a>
+                <div class="board-tag--description">
+                    <a class="play-button" href="{{ boards_processor.first.get_absolute_url }}">
+                    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 50 50">
+                      <path d="M42.7,42.7L25,50L7.3,42.7L0,25L7.3,7.3L25,0l17.7,7.3L50,25L42.7,42.7z" class="polygon"></path>
+                        <rect x="12" y="22.5" width="25" height="3" fill="white"/>
+                        <rect x="12" y="15.5" width="25" height="3" fill="white"/>
+                        <rect x="12" y="29.5" width="25" height="3" fill="white"/>
+                    </svg>
+                  </a>
+                    <h3 class="roll-up">
+                        {% for latter in boards_processor.first.name %}
+                          <span><span>{{latter}}</span><span>{{latter}}</span></span>
+                        {% endfor %}
+                    </h3>
+                    <p class="text-reveal">
+                      <span>
+                        <span>Family {{ boards_processor.first.processor.family }}</span>
+                        <span>{{ boards_processor.first.processor }}</span>
+                      </span>
+                      <span>
+                        <span><span>Family {{ boards_processor.first.processor.family }}</span></span>
+                        <span><span>{{ boards_processor.first.processor }}</span></span>
+                      </span>
+                    </p>
                 </div>
-                <img src="{{ boards_processor.first.image.url }}" alt="">
+                <img class="board_img" src="{{ boards_processor.first.image.url }}" alt="">
             </div>
         {% endif %}
         {% if  boards_language %}
@@ -118,16 +165,32 @@
                 <div class="requirements_recomm">
                      <span>{% trans "Language" %}</span>
                 </div>
-                <div class="information">
-                    <div class="text">
-                        <span>{{ boards_language.first.name }}</span>
-                        <h4>{{ boards_language.first.processor }}</h4>
-                    </div>
-                    <a class="board-btn" href="{{ boards_language.first.get_absolute_url }}">
-                        <img class="svg" src="{% static "img/svg/menu-button.svg" %}" alt="down_arrow">
-                    </a>
+                <div class="board-tag--description">
+                    <a class="play-button" href="{{ boards_language.first.get_absolute_url }}">
+                    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 50 50">
+                      <path d="M42.7,42.7L25,50L7.3,42.7L0,25L7.3,7.3L25,0l17.7,7.3L50,25L42.7,42.7z" class="polygon"></path>
+                        <rect x="12" y="22.5" width="25" height="3" fill="white"/>
+                        <rect x="12" y="15.5" width="25" height="3" fill="white"/>
+                        <rect x="12" y="29.5" width="25" height="3" fill="white"/>
+                    </svg>
+                  </a>
+                    <h3 class="roll-up">
+                        {% for latter in boards_language.first.name %}
+                          <span><span>{{latter}}</span><span>{{latter}}</span></span>
+                        {% endfor %}
+                    </h3>
+                    <p class="text-reveal">
+                      <span>
+                        <span>Family {{ boards_language.first.processor.family }}</span>
+                        <span>{{ boards_language.first.processor }}</span>
+                      </span>
+                      <span>
+                        <span><span>Family {{ boards_language.first.processor.family }}</span></span>
+                        <span><span>{{ boards_language.first.processor }}</span></span>
+                      </span>
+                    </p>
                 </div>
-                <img src="{{ boards_language.first.image.url }}" alt="">
+                <img class="board_img" src="{{ boards_language.first.image.url }}" alt="">
             </div>
         {% endif %}
         </div>

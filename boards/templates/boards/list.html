@@ -2,9 +2,10 @@
 {% load i18n %}
 {% load staticfiles %}
 {% block title %}{% trans "Boards" %}{% endblock %}
+
 {% block header %}
     {% if not rec %}
-    <ul class="menu">
+        <ul class="menu">
             <li>
                 <form id='lang_en' action='{% url 'set_language' %}' method='POST'>{% csrf_token %}
                     <input type='hidden' name='language' value='en'/>
@@ -32,8 +33,10 @@
         </ul>
      {% endif %}
 {% endblock %}
+
 {% block content %}
     <div class="table">
+
         <div class="requirements">
             <div class="sidebar">
                 <h1 class="title_left">{% trans "Categories" %}:</h1>
@@ -52,26 +55,43 @@
             </div>
             {% include "filter.html" with form=form %}
         </div>
+
         <h1 class="title_center" id="boards">{% trans "Boards" %}</h1>
+
         <div class="board-tags">
             {% for board in boards %}
                 <div class="board-tag">
-                    <div class="information">
-                        <div class="text">
-                            <span>{{ board.name }}</span>
-                            <h4>{{ board.processor }}</h4>
-                        </div>
-                        <a class="board-btn" href="{{ board.get_absolute_url }}">
-                            <img class="svg" src="{% static "img/svg/menu-button.svg" %}" alt="down_arrow">
-                        </a>
+                    <div class="board-tag--description">
+                        <a class="play-button" href="{{ board.get_absolute_url }}">
+                        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 50 50">
+                          <path d="M42.7,42.7L25,50L7.3,42.7L0,25L7.3,7.3L25,0l17.7,7.3L50,25L42.7,42.7z" class="polygon"></path>
+                            <rect x="12" y="22.5" width="25" height="3" fill="white"/>
+                            <rect x="12" y="15.5" width="25" height="3" fill="white"/>
+                            <rect x="12" y="29.5" width="25" height="3" fill="white"/>
+                        </svg>
+                      </a>
+                        <h3 class="roll-up">
+                            {% for latter in board.name %}
+                              <span><span>{{latter}}</span><span>{{latter}}</span></span>
+                            {% endfor %}
+                        </h3>
+                        <p class="text-reveal">
+                          <span>
+                            <span>Family {{ board.processor.family }}</span>
+                            <span>{{ board.processor }}</span>
+                          </span>
+                          <span>
+                            <span><span>Family {{ board.processor.family }}</span></span>
+                            <span><span>{{ board.processor }}</span></span>
+                          </span>
+                        </p>
                     </div>
                     <img class="board_img" src="{{ board.image.url }}" alt="">
                 </div>
             {% endfor %}
         </div>
-        <div class="recommend">
 
-        </div>
+        <div class="recommend"></div>
         <div style="clear:both;"></div>
     </div>
 
